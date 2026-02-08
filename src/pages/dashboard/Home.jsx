@@ -1,4 +1,4 @@
-import useAxiosSecure from "../hooks/useAxiosSecure";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 
 const Home = () => {
