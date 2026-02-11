@@ -1,38 +1,75 @@
 import { Link, useLocation, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import useAuth from "../../hooks/useAuth";
+import { useState } from "react";
 
 const Login = () => {
   const {
     register,
     handleSubmit,
-    reset,
-    setValue,
     formState: { errors },
   } = useForm();
+  const { login } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const from = location.state?.from?.pathname || "/";
 
-  const handleLogin = async (data) => {
-    const userData = {
-      email: data.email.toLowerCase(),
-      password: data.password,
-    };
-    console.log(data);
-    const res = await axios.post(
-      `${import.meta.env.VITE_API_URL}/api/login`,
-      userData,
-    );
-    console.log(res);
-    if (res.data.success) {
-      const result = res.data.data;
-      //saving the token in local storage so that it persists refresh
-      localStorage.setItem("access-token", result.token);
-      localStorage.setItem("user-info", JSON.stringify(result.user));
+  //state for error message
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-      //redirect to dashboard
-      navigate(from, { replace: true });
+  const handleLogin = async (data) => {
+    try {
+      setIsLoading(true);
+      setErrorMessage(""); //clear previous errors
+
+      const userData = {
+        email: data.email.toLowerCase(),
+        password: data.password,
+      };
+
+      //calling the mother app's api
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/login`,
+        userData,
+      );
+
+      if (res.data.success) {
+        const result = res.data.data;
+        //calling the login function of auth context
+        login(result.token, result.user);
+
+        //redirect to dashboard
+        navigate(from, { replace: true });
+      }
+    } catch (error) {
+      // Handle different error scenarios
+      if (error.response) {
+        // Server responded with error status
+        const status = error.response.status;
+        const message = error.response.data?.message || "Login failed";
+
+        if (status === 401) {
+          setErrorMessage("Invalid email or password. Please try again.");
+        } else if (status === 404) {
+          setErrorMessage("User not found. Please register first.");
+        } else if (status === 500) {
+          setErrorMessage("Server error. Please try again later.");
+        } else {
+          setErrorMessage(message);
+        }
+      } else if (error.request) {
+        // Request made but no response
+        setErrorMessage(
+          "Cannot connect to server. Please check your connection.",
+        );
+      } else {
+        // Something else happened
+        setErrorMessage("An unexpected error occurred. Please try again.");
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
   return (
@@ -46,7 +83,12 @@ const Login = () => {
             Login with Carevia to access your dashboard
           </p>
         </div>
-
+        {/* Error Message Display */}
+        {errorMessage && (
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-xl">
+            <p>{errorMessage}</p>
+          </div>
+        )}
         <form className="space-y-6" onSubmit={handleSubmit(handleLogin)}>
           {/* Email */}
           <div className="relative">
