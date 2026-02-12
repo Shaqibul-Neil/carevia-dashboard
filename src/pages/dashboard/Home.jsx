@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 const Home = () => {
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
+  console.log("user", user);
   const {
     data: payments = [],
     isLoading,
@@ -15,14 +16,11 @@ const Home = () => {
     queryKey: ["all-payment"],
     queryFn: async () => {
       const res = await axiosSecure.get("/api/payment");
-      console.log("✅ Payment API Response:", res);
-      return res.data.data || res.data;
+      console.log(res);
+      return res.data.data.payments || res.data;
     },
-    //retry: false,
-    // onError: (error) => {
-    //   console.log("❌ Query Error:", error);
-    // },
   });
+
   if (isLoading) return <Loading />;
   if (error) return <Error />;
 
@@ -36,9 +34,9 @@ const Home = () => {
           {/* Admin-specific content */}
         </div>
       )}
-      {user?.role === "citizen" && (
+      {user?.role === "user" && (
         <div className="bg-green-100 p-4 rounded">
-          <h2>Citizen Dashboard</h2>
+          <h2>User Dashboard</h2>
           {/* Citizen-specific content */}
         </div>
       )}

@@ -1,29 +1,56 @@
 import { Outlet } from "react-router";
 import useAuth from "../hooks/useAuth";
+import Sidebar from "../components/shared/Sidebar";
+import Navbar from "../components/shared/Navbar";
+import { useEffect } from "react";
 
 const DashboardLayout = () => {
   const { user, logout } = useAuth();
   const handleLogout = () => {
     logout();
   };
-  return (
-    <div>
-      <div className="flex justify-between items-center p-4 bg-gray-100">
-        <p>Sidebar</p>
-        <div>
-          {/* User info display */}
-          <span className="mr-4">Welcome, {user?.name || user?.email}</span>
 
-          {/* Logout button */}
-          <button
-            onClick={handleLogout}
-            className="bg-red-500 text-white px-4 py-2 rounded"
-          >
-            Logout
-          </button>
+  // Open drawer by default on large screens
+  useEffect(() => {
+    const drawer = document.getElementById("my-drawer-4");
+    const isLargeScreen = window.matchMedia("(min-width: 1024px)").matches;
+    
+    if (drawer && isLargeScreen) {
+      drawer.checked = true;
+    }
+  }, []);
+
+  return (
+    <div className="drawer lg:drawer-open">
+      <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
+      <div className="drawer-content">
+        {/* Navbar */}
+        <Navbar />
+
+        {/* Temporary user info and logout - will be moved later */}
+        <div className="flex justify-between items-center p-4 bg-gray-100">
+          <div>
+            {/* User info display */}
+            <span className="mr-4">Welcome, {user?.name || user?.email}</span>
+
+            {/* Logout button */}
+            <button
+              onClick={handleLogout}
+              className="bg-red-500 text-white px-4 py-2 rounded"
+            >
+              Logout
+            </button>
+          </div>
+        </div>
+
+        {/* Page content here */}
+        <div className="p-4">
+          <Outlet />
         </div>
       </div>
-      <Outlet />
+
+      {/* Sidebar */}
+      <Sidebar />
     </div>
   );
 };

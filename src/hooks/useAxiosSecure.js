@@ -41,9 +41,6 @@ const useAxiosSecure = () => {
         // error response handling
         const status = error.response?.status;
 
-        // console.log("🔴 API Error:", error);
-        // console.log("🔴 Status:", status);
-        // console.log("🔴 Error Response:", error.response);
         //if 401(unauthorized) or 403(forbidden)
         if (status === 401 || status === 403) {
           logout();

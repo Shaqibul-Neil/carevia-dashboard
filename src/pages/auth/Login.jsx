@@ -37,6 +37,7 @@ const Login = () => {
 
       if (res.data.success) {
         const result = res.data.data;
+        console.log(result);
         //calling the login function of auth context
         login(result.token, result.user);
 
@@ -44,6 +45,7 @@ const Login = () => {
         navigate(from, { replace: true });
       }
     } catch (error) {
+      console.log(error);
       // Handle different error scenarios
       if (error.response) {
         // Server responded with error status
