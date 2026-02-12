@@ -63,7 +63,7 @@ const Sidebar = () => {
       ></label>
       <div className="flex min-h-full flex-col items-start bg-emerald-50 dark:bg-emerald-950/30 is-drawer-close:w-14 is-drawer-open:w-64 transition-all duration-300">
         {/* Sidebar Header - Logo + Toggle Button */}
-        <div className="flex w-full items-center justify-between p-4 border-b border-emerald-200 dark:border-emerald-800">
+        <div className="flex w-full items-center justify-between px-4 h-16 border-b border-emerald-200 dark:border-emerald-800">
           {/* Logo - visible only when drawer is open */}
           <div className="is-drawer-close:hidden">
             <h2 className="text-xl font-bold bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 dark:from-emerald-400 dark:via-teal-400 dark:to-cyan-400 bg-clip-text text-transparent">

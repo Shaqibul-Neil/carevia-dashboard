@@ -9,10 +9,8 @@ import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Loading from "../../../components/shared/loading/Loading";
 import Error from "../../../components/shared/others/Error";
 import Filter from "../../../components/shared/menu/Filter";
-import { useState } from "react";
 
 const PaymentsHistory = () => {
-  const [dateAscending, setDateAscending] = useState(false);
   const axiosSecure = useAxiosSecure();
   const {
     data: payments = [],
@@ -58,12 +56,13 @@ const PaymentsHistory = () => {
       <div className="bg-card space-y-6">
         {/* Filter */}
         <Filter />
-        {/* Payment Table */}
-        <PaymentTable
-          payments={payments}
-          dateAscending={dateAscending}
-          setDateAscending={setDateAscending}
-        />
+        <div>
+          <h2 className="text-sm text-muted-foreground mb-1">
+            Showing 0{payments.length} data of 0{payments.length} data
+          </h2>
+          {/* Payment Table */}
+          <PaymentTable payments={payments} />
+        </div>
 
         {/* Pagination */}
         <Pagination />

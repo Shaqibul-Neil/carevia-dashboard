@@ -32,7 +32,7 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="navbar w-full bg-card border-b border-border px-4">
+    <nav className="navbar w-full bg-card border-b border-border px-4 h-16">
       <div className="flex-1 flex items-center justify-between">
         {/* Left side - Hamburger (sm/md) + Navigation Links (lg only) */}
         <div className="flex items-center gap-2">

@@ -1,13 +1,11 @@
-import {
-  ArrowDownToDot,
-  ArrowUpFromDot,
-  CreditCard,
-  EllipsisVertical,
-  ToggleLeft,
-} from "lucide-react";
-import React, { useEffect, useState } from "react";
+import { CreditCard, EllipsisVertical, Eye, Trash } from "lucide-react";
+import React from "react";
 
-const PaymentTable = ({ payments, dateAscending, setDateAscending }) => {
+const PaymentTable = ({ payments }) => {
+  const buttonArray = [
+    { name: "Details", icon: Eye, color: "text-emerald-600" },
+    { name: "Delete", icon: Trash, color: "text-red-600" },
+  ];
   console.log("payments", payments);
 
   const formatDate = (dateString) => {
@@ -32,9 +30,7 @@ const PaymentTable = ({ payments, dateAscending, setDateAscending }) => {
             <tr className="bg-muted/50 dark:bg-muted/20 border-b border-border text-left text-[11px] font-bold text-muted-foreground uppercase tracking-wider">
               <th className="px-6 py-4 min-w-[200px]">Tracking & Service</th>
               <th className="px-6 py-4 min-w-[180px]">Customer</th>
-              <th className="px-6 py-4 text-center min-w-[120px]">
-                Date {dateAscending ? <ArrowUpFromDot /> : <ArrowDownToDot />}
-              </th>
+              <th className="px-6 py-4 text-center min-w-[120px]">Date</th>
               <th className="px-6 py-4 text-right min-w-[120px]">Total</th>
               <th className="px-6 py-4 text-right min-w-[120px]">Paid</th>
               <th className="px-6 py-4 text-right min-w-[120px]">Due</th>
@@ -129,8 +125,28 @@ const PaymentTable = ({ payments, dateAscending, setDateAscending }) => {
                       </td>
                       {/* Settings */}
                       <td className="px-6 py-4 text-center">
-                        <button className="inline-flex items-center text-xs font-semibold cursor-pointer hover:text-muted-foreground text-emerald-600 dark:text-emerald-400">
-                          <EllipsisVertical />
+                        <button className="inline-flex items-center text-xs font-semibold cursor-pointer hover:text-muted-foreground text-emerald-600 dark:text-emerald-400 dropdown dropdown-end z-50">
+                          <div tabIndex={0} role="button">
+                            <div className="w-9">
+                              <EllipsisVertical />
+                            </div>
+                          </div>
+                          <ul
+                            tabIndex={0}
+                            className="dropdown-content bg-muted rounded-xs z-50 mt-3 w-32 p-2 shadow-lg"
+                          >
+                            {/* button Links */}
+                            <div>
+                              {buttonArray.map((link) => (
+                                <li key={link.name}>
+                                  <button className="w-full text-left px-1 py-2 hover:bg-foreground text-foreground hover:text-background rounded-xs transition-all flex items-center gap-3 text-sm duration-500 cursor-pointer">
+                                    <link.icon className={`size-4`} />
+                                    <span>{link.name}</span>
+                                  </button>
+                                </li>
+                              ))}
+                            </div>
+                          </ul>
                         </button>
                       </td>
                     </tr>
