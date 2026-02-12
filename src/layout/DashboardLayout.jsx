@@ -14,7 +14,7 @@ const DashboardLayout = () => {
   useEffect(() => {
     const drawer = document.getElementById("my-drawer-4");
     const isLargeScreen = window.matchMedia("(min-width: 1024px)").matches;
-    
+
     if (drawer && isLargeScreen) {
       drawer.checked = true;
     }
@@ -23,28 +23,28 @@ const DashboardLayout = () => {
   return (
     <div className="drawer lg:drawer-open">
       <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
-      <div className="drawer-content">
+      <div className="drawer-content bg-background">
         {/* Navbar */}
         <Navbar />
 
         {/* Temporary user info and logout - will be moved later */}
-        <div className="flex justify-between items-center p-4 bg-gray-100">
+        {/* <div className="flex justify-between items-center p-4 bg-muted">
           <div>
-            {/* User info display */}
-            <span className="mr-4">Welcome, {user?.name || user?.email}</span>
+            {/* User info display 
+            <span className="mr-4 text-foreground">Welcome, {user?.name || user?.email}</span>
 
-            {/* Logout button */}
+            {/* Logout button *
             <button
               onClick={handleLogout}
-              className="bg-red-500 text-white px-4 py-2 rounded"
+              className="bg-destructive text-destructive-foreground px-4 py-2 rounded"
             >
               Logout
             </button>
           </div>
-        </div>
+        </div> */}
 
         {/* Page content here */}
-        <div className="p-4">
+        <div className="p-6 min-h-screen">
           <Outlet />
         </div>
       </div>

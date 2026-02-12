@@ -20,7 +20,7 @@ const Home = () => {
       return res.data.data.payments || res.data;
     },
   });
-
+  console.log(payments);
   if (isLoading) return <Loading />;
   if (error) return <Error />;
 

@@ -1,2 +1,124 @@
 @import "tailwindcss";
 @plugin "daisyui";
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+}
+
+:root {
+  --radius: 0.625rem;
+  /* Base */
+  --background: #ffffff;
+  --foreground: #0f172a;
+  /* Cards */
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  /* Popover */
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
+  /* Primary - Green buttons, main actions */
+  --primary: #22c55e; /* green-500 */
+  --primary-foreground: #ffffff; /* white text on green */
+  /* Secondary - Soft green backgrounds */
+  --secondary: #dcfce7; /* green-100 */
+  --secondary-foreground: #166534; /* green-800 for contrast */
+  /* Muted - Subtle areas */
+  --muted: #f1f5f9; /* slate-100 */
+  --muted-foreground: #64748b; /* slate-500 */
+  /* Accent - Hover states, highlights */
+  --accent: #bbf7d0; /* green-200 */
+  --accent-foreground: #166534; /* green-800 */
+  /* Alert/Emergency - Amber, NOT red */
+  --destructive: #f59e0b; /* amber-500 */
+  --destructive-foreground: #ffffff;
+  /* Borders & Inputs */
+  --border: #e2e8f0; /* slate-200 */
+  --input: #e2e8f0;
+  --ring: #22c55e; /* green focus ring */
+  /* Charts */
+  --chart-1: #22c55e; /* green-500 */
+  --chart-2: #16a34a; /* green-600 */
+  --chart-3: #4ade80; /* green-400 */
+  --chart-4: #86efac; /* green-300 */
+  --chart-5: #dcfce7; /* green-100 */
+}
+
+.dark {
+  /* Base - Dark backgrounds */
+  --background: #0f172a; /* slate-900 */
+  --foreground: #f8fafc; /* slate-50 */
+  /* Cards - Slightly lighter than bg */
+  --card: #1e293b; /* slate-800 */
+  --card-foreground: #f8fafc;
+  /* Popover */
+  --popover: #1e293b;
+  --popover-foreground: #f8fafc;
+  /* Primary - Green stays green! */
+  --primary: #22c55e; /* green-500 (same) */
+  --primary-foreground: #ffffff;
+  /* Secondary - Darker green */
+  --secondary: #14532d; /* green-900 */
+  --secondary-foreground: #bbf7d0; /* green-200 */
+  /* Muted */
+  --muted: #334155; /* slate-700 */
+  --muted-foreground: #94a3b8; /* slate-400 */
+  /* Accent */
+  --accent: #166534; /* green-800 */
+  --accent-foreground: #dcfce7; /* green-100 */
+
+  /* Alert - Amber (same approach) */
+  --destructive: #f59e0b;
+  --destructive-foreground: #0f172a;
+  /* Borders & Inputs */
+  --border: #334155; /* slate-700 */
+  --input: #334155;
+  --ring: #4ade80; /* green-400 (brighter for dark) */
+
+  /* Charts */
+  --chart-1: #4ade80;
+  --chart-2: #22c55e;
+  --chart-3: #16a34a;
+  --chart-4: #15803d;
+  --chart-5: #166534;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}

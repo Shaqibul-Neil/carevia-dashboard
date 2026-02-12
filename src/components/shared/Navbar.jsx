@@ -13,6 +13,8 @@ import {
   ToggleLeft,
   Sun,
 } from "lucide-react";
+import ToggleButton from "./ToggleButton";
+import { Link } from "react-router";
 
 const Navbar = () => {
   // Navigation links for left side (only visible on lg screens)
@@ -22,9 +24,14 @@ const Navbar = () => {
     { name: "Appointments", icon: Calendar, path: "/appointments" },
     { name: "Reports", icon: FileText, path: "/reports" },
   ];
+  const dropdownLinks = [
+    { name: "My Profile", icon: User, path: "/my-profile" },
+    { name: "My Account", icon: Settings, path: "/my-account" },
+    { name: "Help & Support", icon: HelpCircle, path: "/help-support" },
+  ];
 
   return (
-    <nav className="navbar w-full bg-base-300 px-4">
+    <nav className="navbar w-full bg-card border-b border-border px-4">
       <div className="flex-1 flex items-center justify-between">
         {/* Left side - Hamburger (sm/md) + Navigation Links (lg only) */}
         <div className="flex items-center gap-2">
@@ -53,7 +60,7 @@ const Navbar = () => {
             {navLinks.map((link) => (
               <button
                 key={link.name}
-                className="btn btn-ghost btn-sm flex items-center gap-2"
+                className="btn btn-ghost btn-sm flex items-center gap-2 rounded-xs"
               >
                 <link.icon className="size-4" />
                 <span>{link.name}</span>
@@ -99,7 +106,7 @@ const Navbar = () => {
             </div>
             <ul
               tabIndex={0}
-              className="dropdown-content bg-base-100 rounded-box z-50 mt-3 w-60 p-3 shadow"
+              className="dropdown-content bg-emerald-50 dark:bg-slate-400 rounded-box z-50 mt-3 w-60 p-3 shadow-lg"
             >
               {/* User Info Section */}
               <div className="pb-3 border-b border-gray-300 mb-2">
@@ -115,10 +122,10 @@ const Navbar = () => {
                   </div>
                   {/* Name & Email */}
                   <div className="flex-1 min-w-0">
-                    <h2 className="text-base font-semibold truncate">
+                    <h2 className="text-foreground font-semibold truncate">
                       John Doe
                     </h2>
-                    <p className="text-xs text-gray-500 truncate">
+                    <p className="text-xs text-foreground truncate">
                       john.doe@example.com
                     </p>
                   </div>
@@ -126,41 +133,25 @@ const Navbar = () => {
               </div>
 
               {/* Profile Links */}
-              <div className="space-y-1">
-                <li>
-                  <button className="w-full text-left px-3 py-2 hover:bg-base-200 rounded-lg transition-all duration-200 flex items-center gap-3 text-sm">
-                    <User className="size-4" />
-                    <span>My Profile</span>
-                  </button>
-                </li>
-                <li>
-                  <button className="w-full text-left px-3 py-2 hover:bg-base-200 rounded-lg transition-all duration-200 flex items-center gap-3 text-sm">
-                    <Settings className="size-4" />
-                    <span>My Account</span>
-                  </button>
-                </li>
-                <li>
-                  <button className="w-full text-left px-3 py-2 hover:bg-base-200 rounded-lg transition-all duration-200 flex items-center gap-3 text-sm">
-                    <HelpCircle className="size-4" />
-                    <span>Help & Support</span>
-                  </button>
-                </li>
+              <div className="pb-3 border-b border-gray-300 mb-2">
+                {dropdownLinks.map((link) => (
+                  <li key={link.name}>
+                    <Link className="w-full text-left px-3 py-2 hover:bg-foreground hover:text-background rounded-xs transition-all flex items-center gap-3 text-sm duration-500">
+                      <link.icon className="size-4" />
+                      <span>{link.name}</span>
+                    </Link>
+                  </li>
+                ))}
               </div>
 
               {/* Dark Mode Toggle */}
-              <div className="pt-2 pb-2 border-b border-gray-300 my-2">
-                <button className="w-full text-left px-3 py-2 hover:bg-base-200 rounded-lg transition-all duration-200 flex items-center justify-between text-sm">
-                  <div className="flex items-center gap-3">
-                    <Sun className="size-4" />
-                    <span>Dark Mode</span>
-                  </div>
-                  <ToggleLeft className="size-5" />
-                </button>
+              <div className="pb-2 border-b border-gray-300 mb-2">
+                <ToggleButton />
               </div>
 
               {/* Logout */}
               <li>
-                <button className="w-full text-left px-3 py-2 hover:bg-base-200 rounded-lg transition-all duration-200 flex items-center gap-3 text-sm text-error">
+                <button className="w-full text-left px-3 py-2 hover:bg-base-200 rounded-xs transition-all duration-200 flex items-center gap-3 text-sm text-error">
                   <LogOut className="size-4" />
                   <span>Logout</span>
                 </button>
