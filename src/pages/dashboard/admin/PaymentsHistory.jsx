@@ -1,22 +1,33 @@
 import { Download, Receipt } from "lucide-react";
-import PaymentMetrics from "../../../components/dashboard/PaymentMetrics";
-import PaymentTable from "../../../components/admin/table/PaymentTable";
-import Pagination from "../../../components/shared/Pagination";
-import Button from "../../../components/shared/Button";
+import PaymentMetrics from "../../../components/dashboard/payment/admin/PaymentMetrics";
+import PaymentTable from "../../../components/dashboard/payment/admin/PaymentTable";
+import Pagination from "../../../components/shared/menu/Pagination";
+import Button from "../../../components/shared/button/Button";
+import PageHeader from "../../../components/shared/heading/PageHeader";
+import { useQuery } from "@tanstack/react-query";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import Loading from "../../../components/shared/loading/Loading";
+import Error from "../../../components/shared/others/Error";
+import Filter from "../../../components/shared/menu/Filter";
+import { useState } from "react";
 
 const PaymentsHistory = () => {
-  // Single Dummy Payment Data
-  const payment = {
-    trackingId: "CV08395F",
-    userName: "Kamal Hasan",
-    userEmail: "kamal@gmail.com",
-    serviceName: "Elder Hygiene Care",
-    totalPrice: "180",
-    amountPaid: "90",
-    dueAmount: "90",
-    paymentMethod: "card",
-    createdAt: "2026-02-11T08:48:23.397Z",
-  };
+  const [dateAscending, setDateAscending] = useState(false);
+  const axiosSecure = useAxiosSecure();
+  const {
+    data: payments = [],
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["all-payment"],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/api/payment");
+      return res.data.data.payments;
+    },
+  });
+  console.log(payments);
+  if (isLoading) return <Loading />;
+  if (error) return <Error />;
 
   return (
     <div className="min-h-screen font-sans w-full pb-10 space-y-6">
@@ -27,22 +38,13 @@ const PaymentsHistory = () => {
 
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
           {/* Title Section */}
-          <div>
-            <h1 className="text-2xl sm:text-4xl font-extrabold text-foreground tracking-tight flex items-center gap-3">
-              Payments{" "}
-              <span className="text-emerald-600 dark:text-emerald-400">
-                History
-              </span>
-              <Receipt
-                className="text-muted-foreground/20 dark:text-muted-foreground/10 mt-1"
-                size={36}
-              />
-            </h1>
-            <p className="text-sm text-muted-foreground mt-2 font-medium max-w-lg">
-              Track and manage all payment transactions, revenue, and
-              outstanding dues.
-            </p>
-          </div>
+          <PageHeader
+            title={"Payments History"}
+            subText={
+              "Track and manage all payment transactions, revenue, and              outstanding dues."
+            }
+            icon={Receipt}
+          />
 
           {/* Download PDF Button */}
           <Button icon={<Download size={18} />}>Download PDF</Button>
@@ -54,8 +56,14 @@ const PaymentsHistory = () => {
 
       {/* Main Content Card */}
       <div className="bg-card space-y-6">
+        {/* Filter */}
+        <Filter />
         {/* Payment Table */}
-        <PaymentTable payment={payment} />
+        <PaymentTable
+          payments={payments}
+          dateAscending={dateAscending}
+          setDateAscending={setDateAscending}
+        />
 
         {/* Pagination */}
         <Pagination />

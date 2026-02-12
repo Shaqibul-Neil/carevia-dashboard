@@ -1,8 +1,9 @@
 import { Outlet } from "react-router";
 import useAuth from "../hooks/useAuth";
-import Sidebar from "../components/shared/Sidebar";
-import Navbar from "../components/shared/Navbar";
+
 import { useEffect } from "react";
+import Navbar from "../components/shared/menu/Navbar";
+import Sidebar from "../components/shared/menu/Sidebar";
 
 const DashboardLayout = () => {
   const { user, logout } = useAuth();

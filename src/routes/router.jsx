@@ -16,10 +16,10 @@ import UserManagement from "../pages/dashboard/admin/UserManagemant";
 // User Pages
 import MyBooking from "../pages/dashboard/user/MyBooking";
 import MyPaymentsHistory from "../pages/dashboard/user/MyPaymentsHistory";
+import NotFound from "../components/shared/others/NotFound";
+import Unauthorized from "../components/shared/others/Unauthorized";
 
 // Error Pages
-import Unauthorized from "../components/shared/Unauthorized";
-import NotFound from "../components/shared/NotFound";
 
 const router = createBrowserRouter([
   {

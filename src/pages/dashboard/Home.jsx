@@ -1,5 +1,6 @@
-import Error from "../../components/shared/Error";
-import Loading from "../../components/shared/Loading";
+import Loading from "../../components/shared/loading/Loading";
+import Error from "../../components/shared/others/Error";
+
 import useAuth from "../../hooks/useAuth";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";

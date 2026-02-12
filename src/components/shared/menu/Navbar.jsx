@@ -13,8 +13,9 @@ import {
   ToggleLeft,
   Sun,
 } from "lucide-react";
-import ToggleButton from "./ToggleButton";
+
 import { Link } from "react-router";
+import ToggleButton from "../button/ToggleButton";
 
 const Navbar = () => {
   // Navigation links for left side (only visible on lg screens)

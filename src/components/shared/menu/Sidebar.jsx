@@ -6,7 +6,7 @@ import {
   BookOpen,
   Wallet,
 } from "lucide-react";
-import useAuth from "../../hooks/useAuth";
+import useAuth from "../../../hooks/useAuth";
 import SidebarLinks from "./SidebarLinks";
 
 const Sidebar = () => {
