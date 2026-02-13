@@ -25,13 +25,48 @@ const Chat = () => {
 
   // === Socket Connection Logic ===
   useEffect(() => {
-    //informing socket about joining room
-    socket.emit("join_room", roomId);
-    //after sending message socket returns a receive message event catch it and save it in state
-    socket.on("receive_message", (data) => {
-      setMessages((prev) => [...prev, data]);
-    });
-  }, [roomId]);
+    console.log(socket);
+    if (isJoined && userName && roomId) {
+      console.log("🔌 Attempting to connect socket...");
+      // Remove old listeners before adding new ones
+      socket.off("connect");
+      socket.off("disconnect");
+      socket.off("receive_message");
+
+      //socket connection events
+      socket.on("connect", () => {
+        console.log("✅ Socket connected!");
+        setIsConnected(true);
+        //informing socket about joining room after connection
+        socket.emit("join_room", roomId);
+      });
+
+      socket.on("disconnect", () => {
+        console.log("❌ Socket disconnected!");
+        setIsConnected(false);
+      });
+
+      //after sending message socket returns a receive message event catch it and save it in state
+      socket.on("receive_message", (data) => {
+        console.log("💬 Message received:", data);
+        setMessages((prev) => [...prev, data]);
+      });
+
+      //check if already connected
+      if (socket.connected) {
+        console.log("✅ Socket already connected!");
+        setIsConnected(true);
+        socket.emit("join_room", roomId);
+      }
+    }
+
+    //clean up function
+    return () => {
+      socket.off("connect");
+      socket.off("disconnect");
+      socket.off("receive_message");
+    };
+  }, [roomId, userName, isJoined]);
 
   const chatInfos = {
     tempUserName,
