@@ -49,7 +49,7 @@
   --popover: #ffffff;
   --popover-foreground: #0f172a;
   /* Primary - Green buttons, main actions */
-  --primary: #22c55e; /* green-500 */
+  --primary: #10b981; /* green-500 */
   --primary-foreground: #ffffff; /* white text on green */
   /* Secondary - Soft green backgrounds */
   --secondary: #dcfce7; /* green-100 */
@@ -86,7 +86,7 @@
   --popover: #1e293b;
   --popover-foreground: #f8fafc;
   /* Primary - Green stays green! */
-  --primary: #22c55e; /* green-500 (same) */
+  --primary: #10b981; /* green-500 (same) */
   --primary-foreground: #ffffff;
   /* Secondary - Darker green */
   --secondary: #14532d; /* green-900 */

@@ -14,7 +14,7 @@ const Filter = () => {
           <input
             type="text"
             placeholder="Search by tracking ID, customer, email, or service..."
-            className="w-full pl-10 pr-4 py-3 bg-muted/50 dark:bg-muted/20 border border-border rounded-xs text-xs md:text-sm font-medium text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:focus:ring-emerald-400 transition-all"
+            className="w-full pl-10 pr-4 py-3 bg-muted/50 dark:bg-muted/20 border border-border rounded-xs text-xs md:text-sm font-medium text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-emerald-400 transition-all"
           />
         </div>
       </div>
@@ -28,7 +28,7 @@ const Filter = () => {
             size={16}
           />
 
-          <select className="appearance-none w-full rounded-xs pl-10 pr-10 py-3 bg-muted/50 dark:bg-muted/20 border border-border  text-foreground shadow-sm text-xs md:text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:focus:ring-emerald-400 transition-all cursor-pointer">
+          <select className="appearance-none w-full rounded-xs pl-10 pr-10 py-3 bg-muted/50 dark:bg-muted/20 border border-border  text-foreground shadow-sm text-xs md:text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-emerald-400 transition-all cursor-pointer">
             <option>Sort By</option>
             <option value="createdAt-desc">Date (Newest First)</option>
             <option value="createdAt-asc">Date (Oldest First)</option>
@@ -49,13 +49,13 @@ const Filter = () => {
         </div>
         <div className="flex gap-3 md:w-1/2">
           {/* Status Filter */}
-          <select className="px-4 py-2.5 bg-muted/50 dark:bg-muted/20 border border-border rounded-xs text-xs md:text-sm font-semibold text-foreground focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:focus:ring-emerald-400 transition-all cursor-pointer w-full">
+          <select className="px-4 py-2.5 bg-muted/50 dark:bg-muted/20 border border-border rounded-xs text-xs md:text-sm font-semibold text-foreground focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-emerald-400 transition-all cursor-pointer w-full">
             <option value="all">All Status</option>
             <option value="paid">Paid</option>
             <option value="due">Due</option>
           </select>
           {/* Payment Method Filter */}
-          <select className="px-4 py-2.5 bg-muted/50 dark:bg-muted/20 border border-border rounded-xs text-xs md:text-sm font-semibold text-foreground focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:focus:ring-emerald-400 transition-all cursor-pointer w-full">
+          <select className="px-4 py-2.5 bg-muted/50 dark:bg-muted/20 border border-border rounded-xs text-xs md:text-sm font-semibold text-foreground focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-emerald-400 transition-all cursor-pointer w-full">
             <option value="all">All Methods</option>
             <option value="card">Card</option>
             <option value="cash">Cash</option>

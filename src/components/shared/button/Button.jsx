@@ -1,15 +1,22 @@
-const Button = ({ children, icon, variant = "primary", onClick }) => {
+const Button = ({
+  children,
+  icon,
+  variant = "primary",
+  onClick,
+  className,
+  type = "button",
+}) => {
   const variants = {
     primary:
-      "px-6 py-3 bg-emerald-600 dark:bg-emerald-500 text-white hover:bg-emerald-700 dark:hover:bg-emerald-600",
-    secondary:
-      "px-4 py-3 bg-muted/50 dark:bg-muted/20 text-foreground hover:bg-muted dark:hover:bg-muted/30",
+      "bg-emerald-600 dark:bg-primary text-white hover:bg-emerald-700 dark:hover:bg-emerald-600 shadow-lg hover:shadow-md border border-border",
+    secondary: "text-muted-foreground hover:text-primary hover:bg-muted",
   };
 
   return (
     <button
+      type={type}
       onClick={onClick}
-      className={`${variants[variant]} rounded-xs font-semibold text-sm transition-all duration-200 shadow-sm hover:shadow-md active:scale-95 flex items-center gap-2 border border-border`}
+      className={`${variants[variant]} ${className} rounded-xs font-semibold text-sm duration-200 cursor-pointer active:scale-95 flex items-center gap-2 transition-all transform hover:-translate-y-0.5`}
     >
       {icon}
       <span>{children}</span>

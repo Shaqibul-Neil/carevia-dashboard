@@ -1,29 +1,29 @@
-import { useState } from "react";
 import {
-  Search,
-  MoreVertical,
-  Phone,
-  Video,
-  Send,
-  Paperclip,
-  Smile,
+  ArrowLeft,
   Check,
   CheckCheck,
-  Image as ImageIcon,
+  ImageIcon,
   Mic,
-  ArrowLeft,
+  MoreVertical,
+  Paperclip,
+  Phone,
+  Search,
+  Send,
+  Smile,
+  Video,
 } from "lucide-react";
+import React, { useState } from "react";
+import Button from "../../components/shared/button/Button";
 
 const Chat = () => {
   const [selectedChat, setSelectedChat] = useState(null);
   const [messageInput, setMessageInput] = useState("");
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-
   // Dummy Data for Contacts
   const contacts = [
     {
       id: 1,
-      name: "Alice Freeman",
+      name: "Alice Freeman Freeman Freeman",
       avatar: "https://i.pravatar.cc/150?u=1",
       status: "online",
       lastMessage: "Can we schedule a meeting for tomorrow?",
@@ -104,25 +104,23 @@ const Chat = () => {
       text: "Check this out!",
       time: "09:45 AM",
       status: "delivered",
-      type: "image",
-      content: "https://placehold.co/600x400/22c55e/ffffff?text=Design+Preview",
     },
   ];
 
   const handleSendMessage = (e) => {
-    console.log(e);
+    e.preventDefault();
+    console.log(e.target.myMessage.value);
   };
-
   return (
-    <div className="flex h-[calc(100vh-6rem)] bg-card border border-border rounded-xs overflow-hidden shadow-sm relative">
+    <div className="flex h-[calc(100vh-6rem)] bg-card border border-border rounded-xs overflow-hidden shadow-sm">
       {/* Sidebar - Contacts List */}
       <div
         className={`${
-          isSidebarOpen ? "translate-x-0" : "-translate-x-full absolute z-20"
+          isSidebarOpen ? "translate-x-0" : "-translate-x-500 absolute z-20"
         } md:relative md:translate-x-0 w-full md:w-80 lg:w-96 border-r border-border bg-card flex flex-col transition-transform duration-300 h-full`}
       >
         {/* Sidebar Header */}
-        <div className="p-4 border-b border-border flex items-center justify-between">
+        <div className="px-4 h-16 border-b border-border flex items-center justify-between">
           <h2 className="text-xl font-semibold text-foreground">Messages</h2>
           <div className="flex gap-2">
             <button className="p-2 hover:bg-muted rounded-xs text-muted-foreground transition-colors">
@@ -130,9 +128,8 @@ const Chat = () => {
             </button>
           </div>
         </div>
-
         {/* Search Bar */}
-        <div className="p-4 pt-2">
+        <div className="p-4 pt-4">
           <div className="relative">
             <Search
               size={18}
@@ -145,32 +142,33 @@ const Chat = () => {
             />
           </div>
         </div>
-
         {/* Contacts List */}
-        <div className="flex-1 overflow-y-auto custom-scrollbar">
+        <div className="flex-1 overflow-y-auto">
           {contacts.map((contact) => (
             <div
               key={contact.id}
-              className={`flex items-center gap-3 p-4 cursor-pointer transition-colors border-b border-border/40 hover:bg-muted/50 ${
-                selectedChat?.id === contact.id
-                  ? "bg-primary/5 border-l-4 border-l-primary"
-                  : "border-l-4 border-l-transparent"
-              }`}
+              onClick={() => {
+                setSelectedChat(contact);
+                setIsSidebarOpen(false);
+              }}
+              className={`flex items-center gap-3 p-4 cursor-pointer transition-colors border-b border-border/40 hover:bg-muted/50 ${selectedChat?.id === contact.id ? "bg-emerald-50 dark:bg-slate-700 border-l-4 border-l-primary" : "border-l-4 border-l-transparent"}`}
             >
               <div className="relative">
+                {/* User Image */}
                 <img
                   src={contact.avatar}
                   alt={contact.name}
-                  className="w-12 h-12 rounded-full object-cover border border-border"
+                  className="w-12 h-12 rounded-xs object-cover border border-border"
                 />
                 {contact.status === "online" && (
-                  <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-card rounded-full"></span>
+                  <span className="absolute bottom-0 right-0 w-3 h-3 bg-primary border-2 border-card rounded-xs"></span>
                 )}
               </div>
+              {/* User name and message */}
               <div className="flex-1 min-w-0">
-                <div className="flex justify-between items-baseline mb-1">
+                <div className="flex justify-between items-center mb-1">
                   <h3
-                    className={`font-medium text-sm truncate ${selectedChat?.id === contact.id ? "text-primary" : "text-foreground"}`}
+                    className={`font-medium text-sm text-foreground whitespace-nowrap ${selectedChat?.id === contact?.id ? "text-primary" : "text-foreground"} transition-all duration-500`}
                   >
                     {contact.name}
                   </h3>
@@ -189,7 +187,7 @@ const Chat = () => {
                     )}
                   </p>
                   {contact.unread > 0 && (
-                    <span className="flex items-center justify-center min-w-[20px] h-5 px-1.5 bg-primary text-primary-foreground text-xs font-bold rounded-full">
+                    <span className="flex items-center justify-center min-w-4 h-4 px-1.5 bg-primary text-primary-foreground text-[10px] font-bold rounded-xs">
                       {contact.unread}
                     </span>
                   )}
@@ -199,37 +197,37 @@ const Chat = () => {
           ))}
         </div>
       </div>
-
       {/* Main Chat Area */}
       <div
-        className={`flex-1 flex flex-col h-full bg-muted/30 ${!isSidebarOpen ? "w-full absolute inset-0 z-30 md:static" : "hidden md:flex"}`}
+        className={`flex-1 flex flex-col h-full bg-emerald-50 dark:bg-slate-600 ${!isSidebarOpen ? "w-full absolute inset-0 z-30 md:static" : "hidden md:flex"}`}
       >
         {selectedChat ? (
           <>
             {/* Chat Header */}
-            <div className="h-16 px-6 border-b border-border bg-card flex items-center justify-between shadow-sm z-10">
-              <div className="flex items-center gap-3">
+            <div className="h-16 px-6 border-b border-border bg-emerald-50 dark:bg-slate-700 flex items-center justify-between shadow-sm z-10">
+              <div className="flex items-center md:gap-3 gap-1">
                 <button
+                  className="md:hidden p-1 -ml-6 hover:bg-muted rounded-xs text-muted-foreground"
                   onClick={() => setIsSidebarOpen(true)}
-                  className="md:hidden p-2 -ml-2 hover:bg-muted rounded-xs text-muted-foreground"
                 >
                   <ArrowLeft size={20} />
                 </button>
+                {/* User Image */}
                 <div className="relative">
                   <img
                     src={selectedChat.avatar}
                     alt={selectedChat.name}
-                    className="w-10 h-10 rounded-full object-cover border border-border"
+                    className="w-10 h-10 rounded-xs object-cover border border-border"
                   />
                   {selectedChat.status === "online" && (
-                    <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-card rounded-full"></span>
+                    <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-card rounded-xs"></span>
                   )}
                 </div>
                 <div>
-                  <h3 className="font-semibold text-foreground">
+                  <h3 className="font-semibold text-foreground truncate max-w-24 md:max-w-40 lg:max-w-full">
                     {selectedChat.name}
                   </h3>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-[10px] md:text-xs text-muted-foreground">
                     {selectedChat.status === "online"
                       ? "Active now"
                       : "Last seen recently"}
@@ -250,14 +248,14 @@ const Chat = () => {
             </div>
 
             {/* Messages Area */}
-            <div className="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar bg-[url('https://www.transparenttextures.com/patterns/subtle-light-aluminum.png')] dark:bg-none">
+            <div className="flex-1 overflow-y-auto p-6 space-y-6">
               {/* Date Divider */}
               <div className="flex justify-center">
-                <span className="text-xs font-medium text-muted-foreground bg-muted/50 px-3 py-1 rounded-full">
+                <span className="text-xs font-medium text-muted-foreground bg-muted/50 px-3 py-1 rounded-xs">
                   Today
                 </span>
               </div>
-
+              {/* Message body */}
               {messages.map((msg) => {
                 const isMe = msg.senderId === 0;
                 return (
@@ -272,7 +270,7 @@ const Chat = () => {
                     >
                       {/* Avatar for receiver */}
                       {!isMe && (
-                        <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0 mt-1">
+                        <div className="w-8 h-8 rounded-xs overflow-hidden shrink-0 mt-1">
                           <img
                             src={selectedChat.avatar}
                             alt="Sender"
@@ -280,27 +278,16 @@ const Chat = () => {
                           />
                         </div>
                       )}
-
                       <div className={`group relative`}>
+                        {/* Texts */}
                         <div
-                          className={`p-3 rounded-2xl shadow-sm text-sm ${
+                          className={`p-3 rounded-xs shadow-sm text-sm ${
                             isMe
-                              ? "bg-primary text-primary-foreground rounded-tr-xs"
-                              : "bg-card text-foreground border border-border rounded-tl-xs"
+                              ? "bg-primary text-primary-foreground rounded-tr-xl"
+                              : "bg-card text-foreground border border-border rounded-tl-xl"
                           }`}
                         >
-                          {msg.type === "image" ? (
-                            <div className="space-y-2">
-                              <img
-                                src={msg.content}
-                                alt="Shared"
-                                className="rounded-lg max-h-60 object-cover cursor-pointer hover:opacity-95 transition-opacity"
-                              />
-                              <p>{msg.text}</p>
-                            </div>
-                          ) : (
-                            <p className="leading-relaxed">{msg.text}</p>
-                          )}
+                          <p className="leading-relaxed">{msg.text}</p>
                         </div>
 
                         {/* Meta info */}
@@ -332,62 +319,57 @@ const Chat = () => {
             <div className="p-4 bg-card border-t border-border">
               <form
                 onSubmit={handleSendMessage}
-                className="flex items-center gap-2 bg-muted/30 p-2 rounded-xl border border-border focus-within:ring-1 focus-within:ring-primary/50 focus-within:border-primary transition-all"
+                className="flex items-center gap-2 bg-muted/30 p-2 rounded-xs border border-border focus-within:ring-1 focus-within:ring-primary/50 focus-within:border-primary transition-all"
               >
-                <button
-                  type="button"
-                  className="p-2 text-muted-foreground hover:text-primary hover:bg-muted rounded-full transition-colors"
-                >
+                <Button type="button" variant="secondary" className="p-2">
                   <Smile size={20} />
-                </button>
-                <button
-                  type="button"
-                  className="p-2 text-muted-foreground hover:text-primary hover:bg-muted rounded-full transition-colors"
-                >
+                </Button>
+
+                <Button type="button" variant="secondary" className="p-2">
                   <Paperclip size={20} />
-                </button>
+                </Button>
 
                 <input
                   type="text"
+                  name="myMessage"
                   value={messageInput}
                   onChange={(e) => setMessageInput(e.target.value)}
                   placeholder="Type a message..."
                   className="flex-1 bg-transparent border-none focus:outline-none text-foreground placeholder:text-muted-foreground px-2"
                 />
-
                 {messageInput.trim() ? (
-                  <button
+                  <Button
                     type="submit"
-                    className="p-2 bg-primary text-primary-foreground rounded-lg shadow-md hover:bg-green-600 transition-all transform hover:scale-105 active:scale-95"
+                    variant="primary"
+                    className="p-2 -ml-24"
                   >
                     <Send size={18} />
-                  </button>
+                  </Button>
                 ) : (
-                  <button
+                  <Button
                     type="button"
-                    className="p-2 text-muted-foreground hover:text-primary hover:bg-muted rounded-full transition-colors"
+                    variant="secondary"
+                    className="p-2 -ml-24"
                   >
                     <Mic size={20} />
-                  </button>
+                  </Button>
                 )}
               </form>
             </div>
           </>
         ) : (
           <div className="flex-1 flex flex-col items-center justify-center p-8 text-center bg-gray-50/50 dark:bg-black/20">
-            <div className="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mb-6 animate-pulse">
+            <div className="w-24 h-24 bg-emerald/10 rounded-full flex items-center justify-center mb-6 animate-pulse">
               <ImageIcon size={40} className="text-primary" />
             </div>
             <h2 className="text-2xl font-bold text-foreground mb-2">
               Welcome to Carevia Chat
             </h2>
-            <p className="text-muted-foreground max-w-sm">
+            <p className="text-muted-foreground max-w-sm mb-4">
               Select a conversation from the sidebar to start chatting
               comfortably.
             </p>
-            <button className="mt-8 px-6 py-2.5 bg-primary text-primary-foreground font-medium rounded-xs shadow-lg shadow-green-500/20 hover:shadow-green-500/30 hover:bg-green-600 transition-all transform hover:-translate-y-0.5">
-              Start New Conversation
-            </button>
+            <Button className={"px-4 py-2.5"}> Start New Conversation</Button>
           </div>
         )}
       </div>
