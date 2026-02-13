@@ -125,7 +125,7 @@ const PaymentTable = ({ payments }) => {
                       </td>
                       {/* Settings */}
                       <td className="px-6 py-4 text-center">
-                        <button className="inline-flex items-center text-xs font-semibold cursor-pointer hover:text-muted-foreground text-emerald-600 dark:text-emerald-400 dropdown dropdown-end z-50">
+                        <div className="inline-flex items-center text-xs font-semibold cursor-pointer hover:text-muted-foreground text-emerald-600 dark:text-emerald-400 dropdown dropdown-end z-50">
                           <div tabIndex={0} role="button">
                             <div className="w-9">
                               <EllipsisVertical />
@@ -147,7 +147,7 @@ const PaymentTable = ({ payments }) => {
                               ))}
                             </div>
                           </ul>
-                        </button>
+                        </div>
                       </td>
                     </tr>
 
@@ -164,9 +164,29 @@ const PaymentTable = ({ payments }) => {
                               {formatDate(payment?.createdAt)}
                             </span>
                             {/* Settings */}
-                            <button className="inline-flex items-center text-xs font-semibold cursor-pointer hover:text-muted-foreground text-emerald-600 dark:text-emerald-400">
-                              <EllipsisVertical />
-                            </button>
+                            <div className="inline-flex items-center text-xs font-semibold -mr-2 cursor-pointer hover:text-muted-foreground text-emerald-600 dark:text-emerald-400 dropdown dropdown-end z-50">
+                              <div tabIndex={0} role="button">
+                                <div>
+                                  <EllipsisVertical />
+                                </div>
+                              </div>
+                              <ul
+                                tabIndex={0}
+                                className="dropdown-content bg-muted rounded-xs z-50 mt-3 w-32 p-2 shadow-lg"
+                              >
+                                {/* button Links */}
+                                <div>
+                                  {buttonArray.map((link) => (
+                                    <li key={link.name}>
+                                      <button className="w-full text-left px-1 py-2 hover:bg-foreground text-foreground hover:text-background rounded-xs transition-all flex items-center gap-3 text-sm duration-500 cursor-pointer">
+                                        <link.icon className={`size-4`} />
+                                        <span>{link.name}</span>
+                                      </button>
+                                    </li>
+                                  ))}
+                                </div>
+                              </ul>
+                            </div>
                           </div>
 
                           {/* Service */}
