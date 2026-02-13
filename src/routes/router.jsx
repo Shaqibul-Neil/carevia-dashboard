@@ -18,6 +18,7 @@ import MyBooking from "../pages/dashboard/user/MyBooking";
 import MyPaymentsHistory from "../pages/dashboard/user/MyPaymentsHistory";
 import NotFound from "../components/shared/others/NotFound";
 import Unauthorized from "../components/shared/others/Unauthorized";
+import Chat from "../pages/dashboard/Chat";
 
 // Error Pages
 
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
       {
         path: "analytics",
         element: <Analytics />,
+      },
+      {
+        path: "chat",
+        element: <Chat />,
       },
       // Admin Routes
       {

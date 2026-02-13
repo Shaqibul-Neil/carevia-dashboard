@@ -5,6 +5,7 @@ import {
   Users,
   BookOpen,
   Wallet,
+  MessageSquare,
 } from "lucide-react";
 import useAuth from "../../../hooks/useAuth";
 import SidebarLinks from "./SidebarLinks";
@@ -51,6 +52,11 @@ const Sidebar = () => {
       name: "Dashboard",
       path: "/",
       icon: Home,
+    },
+    {
+      name: "Chat",
+      path: "/chat",
+      icon: MessageSquare,
     },
   ];
 
