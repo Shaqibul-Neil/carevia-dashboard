@@ -26,7 +26,6 @@ const MainChatBox = ({ chatInfos }) => {
     messageInput,
     setMessageInput,
     socket,
-    setMessages,
     isConnected,
   } = chatInfos;
 
@@ -73,7 +72,7 @@ const MainChatBox = ({ chatInfos }) => {
     <div
       className={`flex-1 flex flex-col h-full bg-emerald-50 dark:bg-slate-600 ${!isSidebarOpen ? "w-full absolute inset-0 z-30 md:static" : "hidden md:flex"}`}
     >
-      {!selectedChat ? (
+      {selectedChat ? (
         <>
           {/* Chat Header */}
           <div className="h-16 px-6 border-b border-border bg-emerald-50 dark:bg-slate-700 flex items-center justify-between shadow-sm z-10">

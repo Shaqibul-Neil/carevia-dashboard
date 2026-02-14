@@ -2,13 +2,13 @@ import { MoreVertical, Search } from "lucide-react";
 
 const ChatSidebar = ({ chatInfos }) => {
   const {
-    userName,
-    roomId,
+    setRoomId,
     isSidebarOpen,
     setIsSidebarOpen,
     participants,
     selectedChat,
     setSelectedChat,
+    handleChatSelect,
   } = chatInfos;
 
   return (
@@ -21,11 +21,6 @@ const ChatSidebar = ({ chatInfos }) => {
       <div className="px-4 h-16 border-b border-border flex items-center justify-between">
         <div>
           <h2 className="text-xl font-semibold text-foreground">Messages</h2>
-          <div className="flex gap-1 items-center">
-            <p className="text-muted-foreground text-sm">
-              Room: {roomId}({userName})
-            </p>
-          </div>
         </div>
 
         <div className="flex gap-2">
@@ -54,8 +49,7 @@ const ChatSidebar = ({ chatInfos }) => {
           <div
             key={participant._id}
             onClick={() => {
-              setSelectedChat(participant);
-              setIsSidebarOpen(false);
+              handleChatSelect(participant);
             }}
             className={`flex items-center gap-3 p-4 cursor-pointer transition-colors border-b border-border/40 hover:bg-muted/50 ${selectedChat?._id === participant._id ? "bg-emerald-50 dark:bg-slate-700 border-l-4 border-l-primary" : "border-l-4 border-l-transparent"}`}
           >

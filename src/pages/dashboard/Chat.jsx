@@ -4,18 +4,21 @@ import ChatUI from "../../components/dashboard/chat/ChatUI";
 import { io } from "socket.io-client";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { showSuccessToast, showErrorToast } from "../../lib/utils";
+import useAuth from "../../hooks/useAuth";
+import carevia from "../../../public/carevia.png";
 
 //Socket.IO config
 const SOCKET_URL = import.meta.env.VITE_SOCKET_URL;
 let socket = io.connect(SOCKET_URL);
 
 const Chat = () => {
+  const { user } = useAuth();
+  console.log(user);
+  const userName = user?.role === "admin" ? "Carevia Admin" : user?.name;
+
   // === Join State ===
-  const [isJoined, setIsJoined] = useState(false);
-  const [userName, setUserName] = useState("");
+
   const [roomId, setRoomId] = useState("");
-  const [tempUserName, setTempUserName] = useState("");
-  const [tempRoomId, setTempRoomId] = useState("");
 
   // === Chat States ===
   const [messages, setMessages] = useState([]);
@@ -31,24 +34,48 @@ const Chat = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await axiosSecure.get("/api/chat/user/booking");
-        setParticipants(res.data.data);
+        // --- USER LOGIC ---
+        if (user?.role === "user") {
+          const adminUser = {
+            _id: "admin_carevia",
+            firstName: "Carevia",
+            lastName: "Support",
+            role: "admin",
+            status: "online",
+            email: "support@carevia.com",
+            image: carevia,
+            lastLoginAt: new Date().toISOString(),
+          };
+          setParticipants([adminUser]);
+          // Auto-select support chat for user
+          // Important: User chats in their OWN room ID
+          setRoomId(user?._id);
+          setSelectedChat(adminUser);
+        } else {
+          // --- ADMIN LOGIC ---
+          const res = await axiosSecure.get("/api/chat/user/booking");
+          setParticipants(res.data.data);
+        }
       } catch (error) {
         console.error("Error fetching users:", error);
       }
     };
-    fetchUsers();
-  }, []);
+    if (user) fetchUsers();
+  }, [user, axiosSecure]);
 
   // === useEffect #2: Real-time updates (NEW - ADD THIS) ===
   useEffect(() => {
     // Listen for new customers
     socket.on("customer_added", async (newCustomer) => {
       try {
+        // If regular user, ignore "customer_added"
+        if (user?.role === "user") {
+          return;
+        }
+        // ... admin logic ...
         // Fetch latest data from API
         const res = await axiosSecure.get("/api/chat/user/booking");
         const allUsers = res.data.data;
-
         // Remove duplicates by _id using Map and forOf loop. do not use map/for each to save memory and speed.
         const uniqueMap = new Map();
         for (const user of allUsers) {
@@ -69,7 +96,7 @@ const Chat = () => {
   // === useEffect #3: Socket Connection& Chat room logic ===
 
   useEffect(() => {
-    if (isJoined && userName && roomId) {
+    if (roomId) {
       // // Remove old listeners before adding new ones
       // socket.off("connect");
       // socket.off("disconnect");
@@ -106,23 +133,23 @@ const Chat = () => {
       socket.off("disconnect");
       socket.off("receive_message");
     };
-  }, [roomId, userName, isJoined]);
+  }, [roomId, userName]);
+
+  const handleChatSelect = (participant) => {
+    setSelectedChat(participant);
+    setIsSidebarOpen(false);
+    user?.role === "admin" ? setRoomId(participant._id) : setRoomId(user._id);
+  };
 
   const chatInfos = {
-    tempUserName,
-    setTempUserName,
-    tempRoomId,
-    setTempRoomId,
-    isJoined,
-    setIsJoined,
-    userName,
-    setUserName,
     roomId,
     setRoomId,
     messages,
+    userName,
     selectedChat,
     setSelectedChat,
     isSidebarOpen,
+    handleChatSelect,
     setIsSidebarOpen,
     setMessages,
     messageInput,
@@ -136,11 +163,7 @@ const Chat = () => {
 
   return (
     <div className="h-[calc(100vh-6rem)]">
-      {!isJoined ? (
-        <BeforeJoinRoom chatInfos={chatInfos} />
-      ) : (
-        <ChatUI chatInfos={chatInfos} />
-      )}
+      <ChatUI chatInfos={chatInfos} />
     </div>
   );
 };
