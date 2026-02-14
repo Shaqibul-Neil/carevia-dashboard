@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import BeforeJoinRoom from "../../components/dashboard/chat/BeforeJoinRoom";
 import ChatUI from "../../components/dashboard/chat/ChatUI";
 import { io } from "socket.io-client";
+import axios from "axios";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 //Socket.IO config
 const SOCKET_URL = import.meta.env.VITE_SOCKET_URL;
@@ -23,15 +25,49 @@ const Chat = () => {
   const [selectedChat, setSelectedChat] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
-  // === Socket Connection Logic ===
+  const axiosSecure = useAxiosSecure();
+
+  const fetchUsers = async () => {
+    try {
+      const res = await axiosSecure.get("/api/chat/user/booking");
+      setParticipants(res.data.data);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }
+  };
+
+  // === useEffect #1: Initial fetch ===
   useEffect(() => {
-    console.log(socket);
+    fetchUsers();
+  }, []);
+
+  // === useEffect #2: Real-time updates (NEW - ADD THIS) ===
+  useEffect(() => {
+    // Listen for new customers
+    socket.on("customer_added", (newCustomer) => {
+      console.log("New customer added:", newCustomer);
+      //Add to participants list
+      setParticipants((prev) => {
+        const exists = prev.find((p) => p._id === newCustomer.userId);
+        if (exists) return prev;
+        // New user - REFETCH from API to get complete data
+        fetchUsers(); // Call fetch function
+        return prev; // Return current, fetch will update
+      });
+      //show toast
+    });
+    return () => socket.off("customer_added");
+  }, []);
+
+  // === useEffect #3: Socket Connection& Chat room logic ===
+
+  useEffect(() => {
     if (isJoined && userName && roomId) {
       console.log("🔌 Attempting to connect socket...");
-      // Remove old listeners before adding new ones
-      socket.off("connect");
-      socket.off("disconnect");
-      socket.off("receive_message");
+      // // Remove old listeners before adding new ones
+      // socket.off("connect");
+      // socket.off("disconnect");
+      // socket.off("receive_message");
 
       //socket connection events
       socket.on("connect", () => {
@@ -68,6 +104,7 @@ const Chat = () => {
     };
   }, [roomId, userName, isJoined]);
 
+  console.log(participants);
   const chatInfos = {
     tempUserName,
     setTempUserName,

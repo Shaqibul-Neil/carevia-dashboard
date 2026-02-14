@@ -48,25 +48,25 @@ const ChatSidebar = ({ chatInfos }) => {
           />
         </div>
       </div>
-      {/* Contacts List */}
+      {/* participants List */}
       <div className="flex-1 overflow-y-auto">
-        {participants?.map((contact) => (
+        {participants?.map((participant) => (
           <div
-            key={contact.id}
+            key={participant._id}
             onClick={() => {
-              setSelectedChat(contact);
+              setSelectedChat(participant);
               setIsSidebarOpen(false);
             }}
-            className={`flex items-center gap-3 p-4 cursor-pointer transition-colors border-b border-border/40 hover:bg-muted/50 ${selectedChat?.id === contact.id ? "bg-emerald-50 dark:bg-slate-700 border-l-4 border-l-primary" : "border-l-4 border-l-transparent"}`}
+            className={`flex items-center gap-3 p-4 cursor-pointer transition-colors border-b border-border/40 hover:bg-muted/50 ${selectedChat?._id === participant._id ? "bg-emerald-50 dark:bg-slate-700 border-l-4 border-l-primary" : "border-l-4 border-l-transparent"}`}
           >
             <div className="relative">
               {/* User Image */}
               <img
-                src={contact.avatar}
-                alt={contact.name}
+                src={participant.image}
+                alt={participant.firstName}
                 className="w-12 h-12 rounded-xs object-cover border border-border"
               />
-              {contact.status === "online" && (
+              {participant.status === "online" && (
                 <span className="absolute bottom-0 right-0 w-3 h-3 bg-primary border-2 border-card rounded-xs"></span>
               )}
             </div>
@@ -74,29 +74,29 @@ const ChatSidebar = ({ chatInfos }) => {
             <div className="flex-1 min-w-0">
               <div className="flex justify-between items-center mb-1">
                 <h3
-                  className={`font-medium text-sm text-foreground whitespace-nowrap ${selectedChat?.id === contact?.id ? "text-primary" : "text-foreground"} transition-all duration-500`}
+                  className={`font-medium text-sm text-foreground whitespace-nowrap ${selectedChat?._id === participant?._id ? "text-primary" : "text-foreground"} transition-all duration-500`}
                 >
-                  {contact.name}
+                  {participant.firstName} {participant.lastName}
                 </h3>
                 <span className="text-xs text-muted-foreground whitespace-nowrap">
-                  {contact.time}
+                  {new Date(participant.lastLoginAt).toLocaleDateString()}
                 </span>
               </div>
               <div className="flex justify-between items-center">
                 <p className="text-sm text-muted-foreground truncate pr-2">
-                  {contact.status === "typing" ? (
+                  {/* {participant.status === "typing" ? (
                     <span className="text-primary animate-pulse">
                       Typing...
                     </span>
                   ) : (
-                    contact.lastMessage
-                  )}
+                    participant.lastMessage
+                  )} */}
                 </p>
-                {contact.unread > 0 && (
+                {/* {participant.unread > 0 && (
                   <span className="flex items-center justify-center min-w-4 h-4 px-1.5 bg-primary text-primary-foreground text-[10px] font-bold rounded-xs">
-                    {contact.unread}
+                    {participant.unread}
                   </span>
-                )}
+                )} */}
               </div>
             </div>
           </div>
