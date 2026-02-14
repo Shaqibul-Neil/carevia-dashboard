@@ -122,3 +122,86 @@
     @apply bg-background text-foreground;
   }
 }
+
+.aurora-bg {
+  background: #000;
+  position: relative;
+  overflow: hidden;
+}
+.aurora-bg::before,
+.aurora-bg::after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  border-radius: 100%;
+  opacity: 0.18;
+  z-index: 0;
+}
+.aurora-bg::before {
+  box-shadow: 0 0 35vmax 35vmax red;
+  animation:
+    hue 5s 0s linear infinite,
+    move1 10s 0s linear infinite;
+}
+.aurora-bg::after {
+  box-shadow: 0 0 35vmax 35vmax cyan;
+  animation:
+    hue 10s 0s linear infinite,
+    move2 20s 0s linear infinite;
+}
+@keyframes hue {
+  0% {
+    filter: hue-rotate(0deg);
+  }
+  100% {
+    filter: hue-rotate(360deg);
+  }
+}
+@keyframes move1 {
+  0% {
+    top: 0vh;
+    left: 50%;
+  }
+  25% {
+    left: 0%;
+  }
+  50% {
+    top: 100vh;
+  }
+  75% {
+    left: 100%;
+  }
+  100% {
+    top: 0vh;
+    left: 50%;
+  }
+}
+@keyframes move2 {
+  0% {
+    top: 50vh;
+    left: 100%;
+  }
+  25% {
+    top: 100vh;
+  }
+  50% {
+    left: 0%;
+  }
+  75% {
+    top: 0vh;
+  }
+  100% {
+    top: 50vh;
+    left: 100%;
+  }
+}
+
+/* Glassmorphism Card Style */
+.glass-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
