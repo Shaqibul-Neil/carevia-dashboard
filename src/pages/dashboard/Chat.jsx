@@ -27,36 +27,63 @@ const Chat = () => {
 
   const axiosSecure = useAxiosSecure();
 
-  const fetchUsers = async () => {
-    try {
-      const res = await axiosSecure.get("/api/chat/user/booking");
-      setParticipants(res.data.data);
-    } catch (error) {
-      console.error("Error fetching users:", error);
-    }
-  };
-
   // === useEffect #1: Initial fetch ===
   useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const res = await axiosSecure.get("/api/chat/user/booking");
+        setParticipants(res.data.data);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
     fetchUsers();
   }, []);
 
   // === useEffect #2: Real-time updates (NEW - ADD THIS) ===
   useEffect(() => {
+    console.log("🎧 Socket listener setup starting...");
+    console.log("📡 Socket connected?", socket.connected);
+    console.log("🆔 Socket ID:", socket.id);
     // Listen for new customers
-    socket.on("customer_added", (newCustomer) => {
-      console.log("New customer added:", newCustomer);
-      //Add to participants list
-      setParticipants((prev) => {
-        const exists = prev.find((p) => p._id === newCustomer.userId);
-        if (exists) return prev;
-        // New user - REFETCH from API to get complete data
-        fetchUsers(); // Call fetch function
-        return prev; // Return current, fetch will update
-      });
-      //show toast
+    socket.on("customer_added", async (newCustomer) => {
+      console.log("🔔 SOCKET EVENT RECEIVED:", newCustomer);
+      try {
+        // Fetch latest data from API
+        console.log("📡 Fetching latest users from API...");
+        const res = await axiosSecure.get("/api/chat/user/booking");
+        const allUsers = res.data.data;
+        console.log("✅ API returned", allUsers.length, "users");
+
+        // Remove duplicates by _id using Map and forOf loop. do not use map/for each to save memory and speed.
+        const uniqueMap = new Map();
+        for (const user of allUsers) {
+          uniqueMap.set(user._id, user);
+        }
+        const uniqueUsers = Array.from(uniqueMap.values());
+        setParticipants(uniqueUsers);
+        //show toast
+      } catch (error) {
+        console.error("❌ Error in socket event handler:", error);
+      }
     });
-    return () => socket.off("customer_added");
+    return () => {
+      console.log("🧹 Cleaning up socket listener");
+      socket.off("customer_added");
+    };
+  }, [axiosSecure]);
+
+  // === DEBUG: Socket connection status ===
+  useEffect(() => {
+    console.log("=== SOCKET DEBUG INFO ===");
+    console.log("Socket URL:", SOCKET_URL);
+    console.log("Socket connected:", socket.connected);
+    console.log("Socket ID:", socket.id);
+
+    if (!socket.connected) {
+      console.warn("⚠️ Socket NOT connected! Trying to connect...");
+      socket.connect();
+    }
   }, []);
 
   // === useEffect #3: Socket Connection& Chat room logic ===
