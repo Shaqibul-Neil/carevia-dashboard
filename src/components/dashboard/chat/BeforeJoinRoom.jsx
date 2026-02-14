@@ -19,7 +19,6 @@ const BeforeJoinRoom = ({ chatInfos }) => {
   // === Event Handlers ===
   const handleJoinRoom = (e) => {
     e.preventDefault();
-    console.log(e.target.value);
     if (!tempUserName.trim() || !tempRoomId.trim()) {
       alert("Please enter both username and room ID");
       return;

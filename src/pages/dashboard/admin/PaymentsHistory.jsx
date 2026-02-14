@@ -23,7 +23,6 @@ const PaymentsHistory = () => {
       return res.data.data.payments;
     },
   });
-  console.log(payments);
   if (isLoading) return <Loading />;
   if (error) return <Error />;
 

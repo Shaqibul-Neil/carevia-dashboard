@@ -32,7 +32,6 @@ const MainChatBox = ({ chatInfos }) => {
 
   const handleSendMessage = (e) => {
     e.preventDefault();
-    console.log(messageInput);
     if (messageInput.trim()) {
       const messageData = {
         id: Date.now() + "-" + crypto.randomUUID(),
@@ -46,7 +45,6 @@ const MainChatBox = ({ chatInfos }) => {
         }),
         status: "read",
       };
-      console.log("Emitting to socket:", messageData);
       socket.emit("send_message", messageData);
       // wait for backend to broadcast
       // Backend will send it back via "receive_message" event

@@ -6,6 +6,7 @@ import { RouterProvider } from "react-router";
 import router from "./routes/router";
 import AuthProvider from "./context/AuthProvider";
 import ThemeProvider from "./context/ThemeProvider";
+import { Toaster } from "sonner";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -16,6 +17,7 @@ createRoot(document.getElementById("root")).render(
       <QueryClientProvider client={queryClient}>
         <ThemeProvider>
           <RouterProvider router={router}></RouterProvider>
+          <Toaster richColors closeButton />
         </ThemeProvider>
       </QueryClientProvider>
     </AuthProvider>

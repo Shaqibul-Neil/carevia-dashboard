@@ -6,7 +6,6 @@ const PaymentTable = ({ payments }) => {
     { name: "Details", icon: Eye, color: "text-emerald-600" },
     { name: "Delete", icon: Trash, color: "text-red-600" },
   ];
-  console.log("payments", payments);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);

@@ -8,7 +8,6 @@ import { useQuery } from "@tanstack/react-query";
 const Home = () => {
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
-  console.log("user", user);
   const {
     data: payments = [],
     isLoading,
@@ -17,11 +16,9 @@ const Home = () => {
     queryKey: ["all-payment"],
     queryFn: async () => {
       const res = await axiosSecure.get("/api/payment");
-      console.log(res);
       return res.data.data.payments || res.data;
     },
   });
-  console.log(payments);
   if (isLoading) return <Loading />;
   if (error) return <Error />;
 

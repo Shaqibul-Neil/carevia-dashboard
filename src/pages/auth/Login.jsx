@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import useAuth from "../../hooks/useAuth";
 import { useState } from "react";
+import { showSuccessToast, showErrorToast } from "../../lib/utils";
 
 const Login = () => {
   const {
@@ -37,15 +38,14 @@ const Login = () => {
 
       if (res.data.success) {
         const result = res.data.data;
-        console.log(result);
         //calling the login function of auth context
         login(result.token, result.user);
+        showSuccessToast("Login successful! Welcome back");
 
         //redirect to dashboard
         navigate(from, { replace: true });
       }
     } catch (error) {
-      console.log(error);
       // Handle different error scenarios
       if (error.response) {
         // Server responded with error status
@@ -53,22 +53,31 @@ const Login = () => {
         const message = error.response.data?.message || "Login failed";
 
         if (status === 401) {
-          setErrorMessage("Invalid email or password. Please try again.");
+          const errorMsg = "Invalid email or password. Please try again.";
+          setErrorMessage(errorMsg);
+          showErrorToast(errorMsg);
         } else if (status === 404) {
-          setErrorMessage("User not found. Please register first.");
+          const errorMsg = "User not found. Please register first.";
+          setErrorMessage(errorMsg);
+          showErrorToast(errorMsg);
         } else if (status === 500) {
-          setErrorMessage("Server error. Please try again later.");
+          const errorMsg = "Server error. Please try again later.";
+          setErrorMessage(errorMsg);
+          showErrorToast(errorMsg);
         } else {
           setErrorMessage(message);
+          showErrorToast(message);
         }
       } else if (error.request) {
         // Request made but no response
-        setErrorMessage(
-          "Cannot connect to server. Please check your connection.",
-        );
+        const errorMsg = "Cannot connect to server. Please check your connection.";
+        setErrorMessage(errorMsg);
+        showErrorToast(errorMsg);
       } else {
         // Something else happened
-        setErrorMessage("An unexpected error occurred. Please try again.");
+        const errorMsg = "An unexpected error occurred. Please try again.";
+        setErrorMessage(errorMsg);
+        showErrorToast(errorMsg);
       }
     } finally {
       setIsLoading(false);
