@@ -1,15 +1,8 @@
 import { MoreVertical, Search } from "lucide-react";
 
 const ChatSidebar = ({ chatInfos }) => {
-  const {
-    setRoomId,
-    isSidebarOpen,
-    setIsSidebarOpen,
-    participants,
-    selectedChat,
-    setSelectedChat,
-    handleChatSelect,
-  } = chatInfos;
+  const { isSidebarOpen, participants, selectedChat, handleChatSelect } =
+    chatInfos;
 
   return (
     <div

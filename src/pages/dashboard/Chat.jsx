@@ -1,25 +1,19 @@
 import React, { useEffect, useState } from "react";
-import BeforeJoinRoom from "../../components/dashboard/chat/BeforeJoinRoom";
 import ChatUI from "../../components/dashboard/chat/ChatUI";
-import { io } from "socket.io-client";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { showSuccessToast, showErrorToast } from "../../lib/utils";
 import useAuth from "../../hooks/useAuth";
 import carevia from "../../../public/carevia.png";
-
-//Socket.IO config
-const SOCKET_URL = import.meta.env.VITE_SOCKET_URL;
-let socket = io.connect(SOCKET_URL);
+import useSocket from "../../hooks/useSocket";
 
 const Chat = () => {
   const { user } = useAuth();
+  const socket = useSocket();
   console.log(user);
   const userName = user?.role === "admin" ? "Carevia Admin" : user?.name;
 
   // === Join State ===
-
   const [roomId, setRoomId] = useState("");
-
   // === Chat States ===
   const [messages, setMessages] = useState([]);
   const [messageInput, setMessageInput] = useState("");
@@ -54,7 +48,8 @@ const Chat = () => {
         } else {
           // --- ADMIN LOGIC ---
           const res = await axiosSecure.get("/api/chat/user/booking");
-          setParticipants(res.data.data);
+          console.log("admin data fetched-----", res);
+          setParticipants(res?.data?.data);
         }
       } catch (error) {
         console.error("Error fetching users:", error);
@@ -63,7 +58,7 @@ const Chat = () => {
     if (user) fetchUsers();
   }, [user, axiosSecure]);
 
-  // === useEffect #2: Real-time updates (NEW - ADD THIS) ===
+  // === useEffect #2: Real-time updates () ===
   useEffect(() => {
     // Listen for new customers
     socket.on("customer_added", async (newCustomer) => {
@@ -93,42 +88,38 @@ const Chat = () => {
     };
   }, [axiosSecure, user?.role]);
 
-  // === useEffect #3: Socket Connection& Chat room logic ===
+  // === useEffect #3: Socket Connection & Chat room logic ===
 
   useEffect(() => {
-    //socket connection events
-    socket.on("connect", () => {
-      showSuccessToast("Connected to live chat");
-      setIsConnected(true);
-      //informing socket about joining room after connection
-      if (roomId) {
-        socket.emit("join_room", roomId);
-      }
-    });
-
-    socket.on("disconnect", () => {
-      showErrorToast("Connection lost. Reconnecting...");
-      setIsConnected(false);
-    });
-
-    //after sending message socket returns a receive message event catch it and save it in state
-    socket.on("receive_message", (data) => {
-      setMessages((prev) => [...prev, data]);
-    });
-
-    //check if already connected
-    if (socket.connected) {
-      setIsConnected(true);
+    if (!socket) {
+      return;
+    }
+    if (roomId) {
+      console.log(`🔌 Joining room: ${roomId}`);
       socket.emit("join_room", roomId);
     }
 
+    //after sending message socket returns a receive message event catch it and save it in state
+    const onReceiveMessage = (data) => {
+      //check if the message is this for room
+      if (data.roomId !== roomId) return;
+      console.log("📩 Message Received:", data);
+
+      // //check if the message is from me, if yes then ignore because Optimistic ui already added it--if we use io.to in the backend then we'll need this code. but we use socket.to so we don't need it
+      // if (data.senderId === userName) {
+      //   return;
+      // }
+      setMessages((prev) => [...prev, data]);
+    };
+
+    //adding the listener
+    socket.on("receive_message", onReceiveMessage);
+
     //clean up function
     return () => {
-      socket.off("connect");
-      socket.off("disconnect");
-      socket.off("receive_message");
+      socket.off("receive_message", onReceiveMessage);
     };
-  }, [roomId, userName]);
+  }, [roomId, userName, socket]);
 
   const handleChatSelect = (participant) => {
     setSelectedChat(participant);

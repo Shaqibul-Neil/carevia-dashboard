@@ -26,12 +26,14 @@ const MainChatBox = ({ chatInfos }) => {
     messageInput,
     setMessageInput,
     socket,
+    setMessages,
     isConnected,
   } = chatInfos;
 
   const handleSendMessage = (e) => {
+    console.log("send mesasgae kaj krena");
     e.preventDefault();
-    if (messageInput.trim()) {
+    if (messageInput.trim() && socket) {
       const messageData = {
         id: Date.now() + "-" + crypto.randomUUID(),
         roomId: roomId,
@@ -44,7 +46,10 @@ const MainChatBox = ({ chatInfos }) => {
         }),
         status: "read",
       };
+      console.log(messageData);
       socket.emit("send_message", messageData);
+      //add the message to the local state for optimistic ui
+      setMessages((prev) => [...prev, messageData]);
       // wait for backend to broadcast
       // Backend will send it back via "receive_message" event
       setMessageInput("");
@@ -201,7 +206,10 @@ const MainChatBox = ({ chatInfos }) => {
                 type="text"
                 name="myMessage"
                 value={messageInput}
-                onChange={(e) => setMessageInput(e.target.value)}
+                onChange={(e) => {
+                  setMessageInput(e.target.value);
+                  console.log(e.target.value);
+                }}
                 placeholder="Type a message..."
                 className="flex-1 bg-transparent border-none outline-none text-foreground placeholder:text-muted-foreground px-2 appearance-none"
               />

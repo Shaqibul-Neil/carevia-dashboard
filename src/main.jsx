@@ -7,6 +7,7 @@ import router from "./routes/router";
 import AuthProvider from "./context/AuthProvider";
 import ThemeProvider from "./context/ThemeProvider";
 import { Toaster } from "sonner";
+import SocketProvider from "./context/SocketProvider";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -14,12 +15,14 @@ const queryClient = new QueryClient();
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <AuthProvider>
-      <QueryClientProvider client={queryClient}>
-        <ThemeProvider>
-          <RouterProvider router={router}></RouterProvider>
-          <Toaster richColors closeButton />
-        </ThemeProvider>
-      </QueryClientProvider>
+      <SocketProvider>
+        <QueryClientProvider client={queryClient}>
+          <ThemeProvider>
+            <RouterProvider router={router}></RouterProvider>
+            <Toaster richColors closeButton />
+          </ThemeProvider>
+        </QueryClientProvider>
+      </SocketProvider>
     </AuthProvider>
   </StrictMode>,
 );
