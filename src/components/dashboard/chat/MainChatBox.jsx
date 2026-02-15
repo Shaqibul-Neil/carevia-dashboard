@@ -31,6 +31,9 @@ const MainChatBox = ({ chatInfos }) => {
     isConnected,
   } = chatInfos;
 
+  //everyone getting the same message bug: filter the message so only room message will show. even if server sends other rooms data
+  const roomMessages = messages.filter((msg) => msg.roomId === roomId);
+
   const handleSendMessage = (e) => {
     e.preventDefault();
     if (messageInput.trim() && socket) {
@@ -132,7 +135,7 @@ const MainChatBox = ({ chatInfos }) => {
               </span>
             </div>
             {/* Message body */}
-            {messages?.map((msg) => {
+            {roomMessages?.map((msg) => {
               const isMe = msg.senderId === currentUser?._id;
               return (
                 <div

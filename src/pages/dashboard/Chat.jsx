@@ -5,6 +5,7 @@ import { showSuccessToast, showErrorToast } from "../../lib/utils";
 import useAuth from "../../hooks/useAuth";
 import carevia from "../../../public/carevia.png";
 import useSocket from "../../hooks/useSocket";
+import { Users } from "lucide-react";
 
 const Chat = () => {
   const { user } = useAuth();
@@ -60,6 +61,8 @@ const Chat = () => {
 
   // === useEffect #2: Real-time updates () ===
   useEffect(() => {
+    // Safety check
+    if (!socket) return;
     // Listen for new customers
     socket.on("customer_added", async (newCustomer) => {
       try {
@@ -86,12 +89,12 @@ const Chat = () => {
     return () => {
       socket.off("customer_added");
     };
-  }, [axiosSecure, user?.role]);
+  }, [axiosSecure, user?.role, socket]);
 
   // === useEffect #3: Socket Connection & Chat room logic ===
 
   useEffect(() => {
-    if (!socket) {
+    if (!socket || !roomId) {
       return;
     }
     if (roomId) {
@@ -119,7 +122,7 @@ const Chat = () => {
     return () => {
       socket.off("receive_message", onReceiveMessage);
     };
-  }, [roomId, userName, socket]);
+  }, [roomId, socket]);
 
   const handleChatSelect = (participant) => {
     setSelectedChat(participant);
@@ -149,6 +152,23 @@ const Chat = () => {
     isConnected: isSocketReady,
     socket, // Pass socket instance
   };
+
+  //page reload socket disconnect and page crushes bug fix
+  if (!socket && user) {
+    return (
+      <div className="flex-1 flex flex-col items-center justify-center p-8 text-center bg-gray-50/50 dark:bg-black/20">
+        <div className="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mb-6 animate-pulse">
+          <Users size={40} className="text-primary" />
+        </div>
+        <h2 className="text-2xl font-bold text-foreground mb-2">
+          Connecting to Chat Server...
+        </h2>
+        <p className="text-muted-foreground max-w-sm">
+          Please wait while we establish connection
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="h-[calc(100vh-6rem)]">
