@@ -102,7 +102,7 @@ const Sidebar = () => {
         </div>
 
         {/* Sidebar Menu Items */}
-        <ul className="menu w-full grow px-1.5 py-2 space-y-0.5">
+        <ul className="menu w-full grow px-1.5 py-2 space-y-0.5 z-25">
           {/* Common Menu */}
           {commonMenu.map((item) => (
             <li key={item.path}>

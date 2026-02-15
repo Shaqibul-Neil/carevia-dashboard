@@ -32,7 +32,6 @@ const MainChatBox = ({ chatInfos }) => {
   } = chatInfos;
 
   const handleSendMessage = (e) => {
-    console.log("send mesasgae kaj krena");
     e.preventDefault();
     if (messageInput.trim() && socket) {
       const messageData = {
