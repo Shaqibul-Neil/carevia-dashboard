@@ -127,11 +127,15 @@ const Chat = () => {
     user?.role === "admin" ? setRoomId(participant._id) : setRoomId(user._id);
   };
 
+  //check if socket is ready
+  const isSocketReady = !!(socket && socket.connected);
+
   const chatInfos = {
     roomId,
     setRoomId,
     messages,
     userName,
+    currentUser: user,
     selectedChat,
     setSelectedChat,
     isSidebarOpen,
@@ -142,8 +146,7 @@ const Chat = () => {
     setMessageInput,
     participants,
     setParticipants,
-    isConnected,
-    setIsConnected,
+    isConnected: isSocketReady,
     socket, // Pass socket instance
   };
 

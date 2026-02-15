@@ -19,6 +19,7 @@ const MainChatBox = ({ chatInfos }) => {
   const {
     selectedChat,
     userName,
+    currentUser,
     roomId,
     isSidebarOpen,
     setIsSidebarOpen,
@@ -37,7 +38,7 @@ const MainChatBox = ({ chatInfos }) => {
       const messageData = {
         id: Date.now() + "-" + crypto.randomUUID(),
         roomId: roomId,
-        senderId: userName,
+        senderId: currentUser?._id,
         senderName: userName,
         text: messageInput,
         time: new Date().toLocaleDateString([], {
@@ -57,7 +58,7 @@ const MainChatBox = ({ chatInfos }) => {
   };
 
   // Show welcome screen if not connected
-  if (!isConnected) {
+  if (!socket && !isConnected) {
     return (
       <div className="flex-1 flex flex-col items-center justify-center p-8 text-center bg-gray-50/50 dark:bg-black/20">
         <div className="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mb-6 animate-pulse">
@@ -133,7 +134,7 @@ const MainChatBox = ({ chatInfos }) => {
             </div>
             {/* Message body */}
             {messages?.map((msg) => {
-              const isMe = msg.senderName === userName;
+              const isMe = msg.senderId === currentUser?._id;
               return (
                 <div
                   key={msg.id}

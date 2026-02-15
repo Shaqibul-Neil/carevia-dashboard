@@ -115,6 +115,7 @@ const Login = () => {
               <input
                 type="email"
                 {...register("email", { required: "Email is required" })}
+                defaultValue={"shaqibul.islam.neil@gmail.com"}
                 placeholder="example@email.com"
                 className="w-full py-2.5 px-4 bg-muted/50 border border-border rounded-xs focus:ring-secondary focus:border-secondary focus:outline-none focus:ring-1 transition-all"
               />
@@ -131,6 +132,7 @@ const Login = () => {
               </label>
               <input
                 type="password"
+                defaultValue={"Abc1230#"}
                 {...register("password", { required: "Password is required" })}
                 placeholder="••••••••"
                 className="w-full py-2.5 px-4 bg-muted/50 border border-border rounded-xs focus:ring-secondary focus:border-secondary focus:outline-none focus:ring-1 transition-all"
