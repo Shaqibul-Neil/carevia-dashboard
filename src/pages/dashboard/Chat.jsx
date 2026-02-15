@@ -91,40 +91,35 @@ const Chat = () => {
     return () => {
       socket.off("customer_added");
     };
-  }, [axiosSecure]);
+  }, [axiosSecure, user?.role]);
 
   // === useEffect #3: Socket Connection& Chat room logic ===
 
   useEffect(() => {
-    if (roomId) {
-      // // Remove old listeners before adding new ones
-      // socket.off("connect");
-      // socket.off("disconnect");
-      // socket.off("receive_message");
-
-      //socket connection events
-      socket.on("connect", () => {
-        showSuccessToast("Connected to live chat");
-        setIsConnected(true);
-        //informing socket about joining room after connection
-        socket.emit("join_room", roomId);
-      });
-
-      socket.on("disconnect", () => {
-        showErrorToast("Connection lost. Reconnecting...");
-        setIsConnected(false);
-      });
-
-      //after sending message socket returns a receive message event catch it and save it in state
-      socket.on("receive_message", (data) => {
-        setMessages((prev) => [...prev, data]);
-      });
-
-      //check if already connected
-      if (socket.connected) {
-        setIsConnected(true);
+    //socket connection events
+    socket.on("connect", () => {
+      showSuccessToast("Connected to live chat");
+      setIsConnected(true);
+      //informing socket about joining room after connection
+      if (roomId) {
         socket.emit("join_room", roomId);
       }
+    });
+
+    socket.on("disconnect", () => {
+      showErrorToast("Connection lost. Reconnecting...");
+      setIsConnected(false);
+    });
+
+    //after sending message socket returns a receive message event catch it and save it in state
+    socket.on("receive_message", (data) => {
+      setMessages((prev) => [...prev, data]);
+    });
+
+    //check if already connected
+    if (socket.connected) {
+      setIsConnected(true);
+      socket.emit("join_room", roomId);
     }
 
     //clean up function

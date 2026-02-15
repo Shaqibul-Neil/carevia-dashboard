@@ -5,6 +5,7 @@ const Button = ({
   onClick,
   className,
   type = "button",
+  disabled = "false",
 }) => {
   const variants = {
     primary:
@@ -16,6 +17,7 @@ const Button = ({
     <button
       type={type}
       onClick={onClick}
+      disabled={disabled}
       className={`${variants[variant]} ${className} rounded-xs font-semibold text-sm duration-200 cursor-pointer active:scale-95 flex items-center gap-2 transition-all transform hover:-translate-y-0.5`}
     >
       {icon}

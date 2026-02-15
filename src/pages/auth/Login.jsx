@@ -5,6 +5,7 @@ import axios from "axios";
 import useAuth from "../../hooks/useAuth";
 import { useState } from "react";
 import { showSuccessToast, showErrorToast } from "../../lib/utils";
+import Button from "../../components/shared/button/Button";
 
 const Login = () => {
   const {
@@ -151,13 +152,13 @@ const Login = () => {
             </div>
             {/* Login button */}
             <div className="flex justify-center">
-              <button
-                className="w-full py-3 bg-primary hover:bg-primary/90 text-white cursor-pointer rounded-xs font-bold transition-all shadow-sm active:scale-[0.98]"
+              <Button
+                className="w-full py-3 justify-center"
                 type="submit"
                 disabled={isLoading}
               >
                 {isLoading ? "Logging in..." : "Login"}
-              </button>
+              </Button>
             </div>
           </form>
           {/* Divider */}
