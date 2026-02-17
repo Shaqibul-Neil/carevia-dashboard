@@ -9,17 +9,28 @@ import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Loading from "../../../components/shared/loading/Loading";
 import Error from "../../../components/shared/others/Error";
 import Filter from "../../../components/shared/menu/Filter";
+import { useState } from "react";
 
 const PaymentsHistory = () => {
+  const [paymentFilter, setPaymentFilter] = useState({
+    search: "",
+    sortby: "all",
+    status: "all",
+    method: "all",
+  });
+  console.log(paymentFilter);
+
   const axiosSecure = useAxiosSecure();
   const {
     data: payments = [],
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["all-payment"],
+    queryKey: ["all-payment", paymentFilter],
     queryFn: async () => {
-      const res = await axiosSecure.get("/api/payment");
+      const res = await axiosSecure.get("/api/payment", {
+        params: { ...paymentFilter },
+      });
       return res.data.data.payments;
     },
   });
@@ -57,7 +68,10 @@ const PaymentsHistory = () => {
       {/* Main Content Card */}
       <div className="bg-card space-y-6">
         {/* Filter */}
-        <Filter />
+        <Filter
+          paymentFilter={paymentFilter}
+          setPaymentFilter={setPaymentFilter}
+        />
         <div>
           <h2 className="text-sm text-muted-foreground mb-1">
             Showing 0{payments.length} data of 0{payments.length} data

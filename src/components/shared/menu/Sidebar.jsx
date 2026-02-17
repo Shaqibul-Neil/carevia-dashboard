@@ -7,8 +7,10 @@ import {
   Wallet,
   MessageSquare,
 } from "lucide-react";
+import { GiHeartInside } from "react-icons/gi";
 import useAuth from "../../../hooks/useAuth";
 import SidebarLinks from "./SidebarLinks";
+import { Link } from "react-router";
 
 const Sidebar = () => {
   const { hasRole } = useAuth();
@@ -67,14 +69,18 @@ const Sidebar = () => {
         aria-label="close sidebar"
         className="drawer-overlay"
       ></label>
-      <div className="flex min-h-full flex-col items-start bg-emerald-50 dark:bg-emerald-950/30 is-drawer-close:w-14 is-drawer-open:w-64 transition-all duration-300">
+      <div className="flex min-h-full flex-col items-start bg-gradient-to-r from-emerald-50 via-teal-50 to-cyan-50 dark:from-emerald-950/20 dark:via-teal-950/20 dark:to-cyan-950/20 border-b border-emerald-100 dark:border-emerald-900/30 is-drawer-close:w-14 is-drawer-open:w-64 transition-all duration-300">
         {/* Sidebar Header - Logo + Toggle Button */}
         <div className="flex w-full items-center justify-between px-4 h-16 border-b border-emerald-200 dark:border-emerald-800">
           {/* Logo - visible only when drawer is open */}
           <div className="is-drawer-close:hidden">
-            <h2 className="text-xl font-bold bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 dark:from-emerald-400 dark:via-teal-400 dark:to-cyan-400 bg-clip-text text-transparent">
-              Carevia
-            </h2>
+            <Link href={"/"} className="flex items-center">
+              <span className="font-black text-2xl tracking-tighter hover:scale-105 transition-all duration-500 transform-gpu will-change-transform flex items-center bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 dark:from-emerald-400 dark:via-teal-400 dark:to-cyan-400 bg-clip-text text-transparent">
+                <span>Carev</span>
+                <GiHeartInside className="w-6 h-6 shrink-0 text-emerald-600 dark:text-teal-400" />
+                <span className="-ml-1">a</span>
+              </span>
+            </Link>
           </div>
 
           {/* Toggle Button */}

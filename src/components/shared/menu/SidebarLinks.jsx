@@ -10,15 +10,15 @@ const SidebarLinks = ({ to, icon: Icon, label }) => {
     >
       {({ isActive }) => (
         <div
-          className={`flex items-center gap-3 w-full py-2.5 px-3 rounded-xs transition-all duration-300
-       text-foreground font-medium 
-       ${isActive ? "bg-emerald-100 dark:bg-emerald-900/50 text-emerald-700 dark:text-emerald-300" : ""}
+          className={`flex items-center gap-3 w-full py-2.5 px-3 rounded-xs transition-all duration-500
+        font-medium 
+       ${isActive ? "bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 dark:from-emerald-400 dark:via-teal-400 dark:to-cyan-400 text-white" : "text-foreground"}
        hover:bg-emerald-100/50 dark:hover:bg-emerald-900/30 w-full py-2.5 px-3
           }`}
         >
           {Icon && (
             <Icon
-              className={`size-5 shrink-0 ${isActive ? "text-emerald-600 dark:text-emerald-400" : "text-muted-foreground"}`}
+              className={`size-5 shrink-0 ${isActive ? "text-white" : "text-muted-foreground"}`}
             />
           )}
 

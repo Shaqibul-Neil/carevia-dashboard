@@ -52,6 +52,7 @@ const DashboardLayout = () => {
 
       {/* Sidebar */}
       <Sidebar />
+      {/* Chat icon */}
     </div>
   );
 };

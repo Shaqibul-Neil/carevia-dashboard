@@ -12,15 +12,24 @@ import {
   LogOut,
   ToggleLeft,
   Sun,
+  MessageSquare,
 } from "lucide-react";
 
-import { Link } from "react-router";
+import { Link, NavLink, useLocation } from "react-router";
 import ToggleButton from "../button/ToggleButton";
+import useAuth from "../../../hooks/useAuth";
 
 const Navbar = () => {
+  const { user, logout } = useAuth();
+  const location = useLocation();
+  console.log("navbar", location);
+  const handleLogout = () => {
+    logout();
+  };
+
   // Navigation links for left side (only visible on lg screens)
   const navLinks = [
-    { name: "Dashboard", icon: Home, path: "/dashboard" },
+    { name: "Dashboard", icon: Home, path: "/" },
     { name: "Patients", icon: Users, path: "/patients" },
     { name: "Appointments", icon: Calendar, path: "/appointments" },
     { name: "Reports", icon: FileText, path: "/reports" },
@@ -57,15 +66,22 @@ const Navbar = () => {
           </label>
 
           {/* Navigation Links - visible only on lg screens */}
-          <div className="hidden lg:flex items-center gap-1">
+          <div className="hidden lg:flex items-center gap-3">
             {navLinks.map((link) => (
-              <button
+              <NavLink
                 key={link.name}
-                className="btn btn-ghost btn-sm flex items-center gap-2 rounded-xs"
+                to={link.path}
+                className={({ isActive }) =>
+                  `flex rounded-xs text-foreground items-center gap-1 px-2 py-1 text-sm hover:bg-emerald-100/50 dark:hover:bg-emerald-900/30 ${
+                    isActive
+                      ? "bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 dark:from-emerald-400 dark:via-teal-400 dark:to-cyan-400 text-white"
+                      : "text-foreground"
+                  }`
+                }
               >
-                <link.icon className="size-4" />
+                <link.icon className="size-3" />
                 <span>{link.name}</span>
-              </button>
+              </NavLink>
             ))}
           </div>
         </div>
@@ -73,19 +89,27 @@ const Navbar = () => {
         {/* Right side - Action Icons + User Dropdown */}
         <div className="flex items-center gap-2">
           {/* Action Icons */}
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-3">
+            {/* Chat Icon */}
+            <Link
+              to={"/chat"}
+              className="cursor-pointer hover:-translate-y-0.5 hover:scale-105 duration-500 transition-all"
+            >
+              <MessageSquare className="size-5 text-primary" />
+            </Link>
+
             {/* Search Icon */}
-            <button className="btn btn-ghost btn-circle btn-sm">
+            <button className="cursor-pointer hover:-translate-y-0.5 hover:scale-105 duration-500 transition-all">
               <Search className="size-5" />
             </button>
 
             {/* Bell Icon */}
-            <button className="btn btn-ghost btn-circle btn-sm">
+            <button className="cursor-pointer hover:-translate-y-0.5 hover:scale-105 duration-500 transition-all">
               <Bell className="size-5" />
             </button>
 
             {/* Layout Dashboard Icon */}
-            <button className="btn btn-ghost btn-circle btn-sm">
+            <button className="cursor-pointer hover:-translate-y-0.5 hover:scale-105 duration-500 transition-all">
               <LayoutDashboard className="size-5" />
             </button>
           </div>
@@ -107,7 +131,7 @@ const Navbar = () => {
             </div>
             <ul
               tabIndex={0}
-              className="dropdown-content bg-emerald-50 dark:bg-slate-400 rounded-box z-50 mt-3 w-60 p-3 shadow-lg"
+              className="dropdown-content bg-emerald-50 dark:bg-slate-400 rounded-box z-50 mt-3 w-64 p-3 shadow-lg"
             >
               {/* User Info Section */}
               <div className="pb-3 border-b border-gray-300 mb-2">
@@ -124,10 +148,10 @@ const Navbar = () => {
                   {/* Name & Email */}
                   <div className="flex-1 min-w-0">
                     <h2 className="text-foreground font-semibold truncate">
-                      John Doe
+                      {user?.name}
                     </h2>
                     <p className="text-xs text-foreground truncate">
-                      john.doe@example.com
+                      {user?.email}
                     </p>
                   </div>
                 </div>
@@ -145,18 +169,20 @@ const Navbar = () => {
                 ))}
               </div>
 
-              {/* Dark Mode Toggle */}
-              <div className="pb-2 border-b border-gray-300 mb-2">
-                <ToggleButton />
-              </div>
-
               {/* Logout */}
               <li>
-                <button className="w-full text-left px-3 py-2 hover:bg-base-200 rounded-xs transition-all duration-200 flex items-center gap-3 text-sm text-error">
+                <button
+                  className="w-full text-left px-3 py-2 rounded-xs transition-all duration-200 flex items-center gap-3 text-sm hover:bg-foreground hover:text-background cursor-pointer"
+                  onClick={handleLogout}
+                >
                   <LogOut className="size-4" />
                   <span>Logout</span>
                 </button>
               </li>
+              {/* Dark Mode Toggle */}
+              <div className="pb-2 border-b border-gray-300">
+                <ToggleButton />
+              </div>
             </ul>
           </div>
         </div>

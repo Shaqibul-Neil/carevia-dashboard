@@ -74,7 +74,7 @@ const Chat = () => {
         // Fetch latest data from API
         const res = await axiosSecure.get("/api/chat/user/booking");
         const allUsers = res.data.data;
-        // Remove duplicates by _id using Map and forOf loop. do not use map/for each to save memory and speed.
+        // Remove duplicates by _id using Map and for Of loop. do not use map/for each to save memory and speed.
         const uniqueMap = new Map();
         for (const user of allUsers) {
           uniqueMap.set(user._id, user);
@@ -92,7 +92,6 @@ const Chat = () => {
   }, [axiosSecure, user?.role, socket]);
 
   // === useEffect #3: Socket Connection & Chat room logic ===
-
   useEffect(() => {
     if (!socket || !roomId) {
       return;

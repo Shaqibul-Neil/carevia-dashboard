@@ -1,7 +1,12 @@
 import { ArrowUpDown, ChevronDown, Search } from "lucide-react";
 import React from "react";
 
-const Filter = () => {
+const Filter = ({ paymentFilter, setPaymentFilter }) => {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setPaymentFilter((prev) => ({ ...prev, [name]: value }));
+  };
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 p-3 rounded-xs bg-muted/50 dark:bg-muted/20">
       {/* Search - takes 3 columns on desktop */}
@@ -13,6 +18,9 @@ const Filter = () => {
           />
           <input
             type="text"
+            value={paymentFilter.search}
+            name="search"
+            onChange={(e) => handleChange(e)}
             placeholder="Search by tracking ID, customer, email, or service..."
             className="w-full pl-10 pr-4 py-3 bg-muted/50 dark:bg-muted/20 border border-border rounded-xs text-xs md:text-sm font-medium text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-emerald-400 transition-all"
           />
@@ -28,8 +36,13 @@ const Filter = () => {
             size={16}
           />
 
-          <select className="appearance-none w-full rounded-xs pl-10 pr-10 py-3 bg-muted/50 dark:bg-muted/20 border border-border  text-foreground shadow-sm text-xs md:text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-emerald-400 transition-all cursor-pointer">
-            <option>Sort By</option>
+          <select
+            className="appearance-none w-full rounded-xs pl-10 pr-10 py-3 bg-muted/50 dark:bg-muted/20 border border-border  text-foreground shadow-sm text-xs md:text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-emerald-400 transition-all cursor-pointer"
+            name="sortby"
+            value={paymentFilter.sortby}
+            onChange={(e) => handleChange(e)}
+          >
+            <option value={"all"}>Sort By</option>
             <option value="createdAt-desc">Date (Newest First)</option>
             <option value="createdAt-asc">Date (Oldest First)</option>
 
@@ -49,13 +62,23 @@ const Filter = () => {
         </div>
         <div className="flex gap-3 md:w-1/2">
           {/* Status Filter */}
-          <select className="px-4 py-2.5 bg-muted/50 dark:bg-muted/20 border border-border rounded-xs text-xs md:text-sm font-semibold text-foreground focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-emerald-400 transition-all cursor-pointer w-full">
+          <select
+            className="px-4 py-2.5 bg-muted/50 dark:bg-muted/20 border border-border rounded-xs text-xs md:text-sm font-semibold text-foreground focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-emerald-400 transition-all cursor-pointer w-full"
+            name="status"
+            value={paymentFilter.status}
+            onChange={(e) => handleChange(e)}
+          >
             <option value="all">All Status</option>
             <option value="paid">Paid</option>
             <option value="due">Due</option>
           </select>
           {/* Payment Method Filter */}
-          <select className="px-4 py-2.5 bg-muted/50 dark:bg-muted/20 border border-border rounded-xs text-xs md:text-sm font-semibold text-foreground focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-emerald-400 transition-all cursor-pointer w-full">
+          <select
+            className="px-4 py-2.5 bg-muted/50 dark:bg-muted/20 border border-border rounded-xs text-xs md:text-sm font-semibold text-foreground focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-emerald-400 transition-all cursor-pointer w-full"
+            name="method"
+            value={paymentFilter.method}
+            onChange={(e) => handleChange(e)}
+          >
             <option value="all">All Methods</option>
             <option value="card">Card</option>
             <option value="cash">Cash</option>
