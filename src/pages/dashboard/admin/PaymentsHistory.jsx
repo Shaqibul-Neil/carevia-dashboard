@@ -9,7 +9,7 @@ import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Loading from "../../../components/shared/loading/Loading";
 import Error from "../../../components/shared/others/Error";
 import Filter from "../../../components/shared/menu/Filter";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const PaymentsHistory = () => {
   const [paymentFilter, setPaymentFilter] = useState({
@@ -18,7 +18,13 @@ const PaymentsHistory = () => {
     status: "all",
     method: "all",
   });
-  console.log(paymentFilter);
+  const [tableLayout, setTableLayout] = useState(false);
+  const [cardLayout, setCardLayout] = useState(false);
+  const layout = { tableLayout, setTableLayout, cardLayout, setCardLayout };
+
+  useEffect(() => {
+    setTableLayout(true);
+  }, []);
 
   const axiosSecure = useAxiosSecure();
   const {
@@ -31,10 +37,10 @@ const PaymentsHistory = () => {
       const res = await axiosSecure.get("/api/payment", {
         params: { ...paymentFilter },
       });
+
       return res.data.data.payments;
     },
   });
-  console.log("payments", payments);
   if (isLoading) return <Loading />;
   if (error) return <Error />;
 
@@ -71,13 +77,14 @@ const PaymentsHistory = () => {
         <Filter
           paymentFilter={paymentFilter}
           setPaymentFilter={setPaymentFilter}
+          layout={layout}
         />
         <div>
           <h2 className="text-sm text-muted-foreground mb-1">
             Showing 0{payments.length} data of 0{payments.length} data
           </h2>
           {/* Payment Table */}
-          <PaymentTable payments={payments} />
+          <PaymentTable payments={payments} layout={layout} />
         </div>
 
         {/* Pagination */}
