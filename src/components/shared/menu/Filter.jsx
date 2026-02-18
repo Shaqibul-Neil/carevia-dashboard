@@ -5,13 +5,13 @@ import {
   Search,
   TableOfContents,
 } from "lucide-react";
-import React from "react";
 
-const Filter = ({ paymentFilter, setPaymentFilter, layout }) => {
+const Filter = ({ params, setParams, layout }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setPaymentFilter((prev) => ({ ...prev, [name]: value }));
+    setParams((prev) => ({ ...prev, [name]: value, page: 1 })); // Reset page to 0 whenever filters change
   };
+
   const { tableLayout, setTableLayout, setCardLayout, cardLayout } = layout;
   return (
     <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 p-3 rounded-xs bg-muted/50 dark:bg-muted/20">
@@ -24,7 +24,7 @@ const Filter = ({ paymentFilter, setPaymentFilter, layout }) => {
           />
           <input
             type="text"
-            value={paymentFilter.search}
+            value={params.search}
             name="search"
             onChange={(e) => handleChange(e)}
             placeholder="Search by tracking ID, customer, email, or service..."
@@ -46,7 +46,7 @@ const Filter = ({ paymentFilter, setPaymentFilter, layout }) => {
             <select
               className="appearance-none w-full md:w-47 lg:w-full rounded-xs pl-10 py-2.5 bg-muted/50 dark:bg-muted/20 border border-border  text-foreground shadow-sm text-xs md:text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-emerald-400 transition-all cursor-pointer"
               name="sortby"
-              value={paymentFilter.sortby}
+              value={params.sortby}
               onChange={(e) => handleChange(e)}
             >
               <option value={"all"}>Sort By</option>
@@ -72,7 +72,7 @@ const Filter = ({ paymentFilter, setPaymentFilter, layout }) => {
             <select
               className="px-4 py-2.5 bg-muted/50 dark:bg-muted/20 border border-border rounded-xs text-xs md:text-sm font-semibold text-foreground focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-emerald-400 transition-all cursor-pointer md:w-47 lg:w-1/2 w-1/2"
               name="status"
-              value={paymentFilter.status}
+              value={params.status}
               onChange={(e) => handleChange(e)}
             >
               <option value="all">All Status</option>
@@ -83,7 +83,7 @@ const Filter = ({ paymentFilter, setPaymentFilter, layout }) => {
             <select
               className="px-4 py-2.5 bg-muted/50 dark:bg-muted/20 border border-border rounded-xs text-xs md:text-sm font-semibold text-foreground focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-emerald-400 transition-all cursor-pointer md:w-47 lg:w-1/2 w-1/2"
               name="method"
-              value={paymentFilter.method}
+              value={params.method}
               onChange={(e) => handleChange(e)}
             >
               <option value="all">All Methods</option>

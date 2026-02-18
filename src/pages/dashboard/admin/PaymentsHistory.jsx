@@ -12,11 +12,13 @@ import Filter from "../../../components/shared/menu/Filter";
 import { useEffect, useState } from "react";
 
 const PaymentsHistory = () => {
-  const [paymentFilter, setPaymentFilter] = useState({
+  const [params, setParams] = useState({
     search: "",
     sortby: "all",
     status: "all",
     method: "all",
+    page: 1,
+    limit: 2,
   });
   const [tableLayout, setTableLayout] = useState(false);
   const [cardLayout, setCardLayout] = useState(false);
@@ -27,22 +29,23 @@ const PaymentsHistory = () => {
   }, []);
 
   const axiosSecure = useAxiosSecure();
-  const {
-    data: payments = [],
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ["all-payment", paymentFilter],
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["all-payment", params],
     queryFn: async () => {
       const res = await axiosSecure.get("/api/payment", {
-        params: { ...paymentFilter },
+        params: { ...params },
       });
-
-      return res.data.data.payments;
+      return res.data;
     },
   });
+
   if (isLoading) return <Loading />;
   if (error) return <Error />;
+
+  const payments = data?.data?.payments || [];
+  const totalPages = data?.data?.totalPages || 0;
+  const totalItems = data?.data?.totalItems || 0;
 
   return (
     <div className="min-h-screen font-sans w-full pb-10 space-y-6">
@@ -74,21 +77,24 @@ const PaymentsHistory = () => {
       {/* Main Content Card */}
       <div className="bg-card space-y-6">
         {/* Filter */}
-        <Filter
-          paymentFilter={paymentFilter}
-          setPaymentFilter={setPaymentFilter}
-          layout={layout}
-        />
+        <Filter params={params} setParams={setParams} layout={layout} />
         <div>
           <h2 className="text-sm text-muted-foreground mb-1">
-            Showing 0{payments.length} data of 0{payments.length} data
+            Showing {String(payments.length).padStart(2, "0")} data of{" "}
+            {String(totalItems).padStart(2, "0")} data
           </h2>
           {/* Payment Table */}
           <PaymentTable payments={payments} layout={layout} />
         </div>
 
         {/* Pagination */}
-        <Pagination />
+        {payments.length > 0 && (
+          <Pagination
+            setParams={setParams}
+            currentPage={params.page}
+            totalPages={totalPages}
+          />
+        )}
       </div>
     </div>
   );
