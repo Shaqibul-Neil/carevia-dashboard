@@ -2,7 +2,7 @@ import { createBrowserRouter } from "react-router";
 import DashboardLayout from "../layout/DashboardLayout";
 import Home from "../pages/dashboard/Home";
 import Analytics from "../pages/dashboard/Analytics";
-import Login from "../pages/auth/login";
+
 import AuthLayout from "../layout/AuthLayout";
 import PrivateRoute from "./PrivateRoute";
 import AdminRoute from "./AdminRoute";
@@ -19,6 +19,7 @@ import MyPaymentsHistory from "../pages/dashboard/user/MyPaymentsHistory";
 import NotFound from "../components/shared/others/NotFound";
 import Unauthorized from "../components/shared/others/Unauthorized";
 import Chat from "../pages/dashboard/Chat";
+import Login from "../pages/auth/Login";
 
 // Error Pages
 

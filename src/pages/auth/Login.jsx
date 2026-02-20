@@ -39,6 +39,7 @@ const Login = () => {
       );
 
       if (res.data.success) {
+        console.log("Login res:", res.data);
         const result = res.data.data;
         //calling the login function of auth context
         login(result.token, result.user);

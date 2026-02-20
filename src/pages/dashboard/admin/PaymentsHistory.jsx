@@ -4,12 +4,14 @@ import PaymentTable from "../../../components/dashboard/payment/admin/PaymentTab
 import Pagination from "../../../components/shared/menu/Pagination";
 import Button from "../../../components/shared/button/Button";
 import PageHeader from "../../../components/shared/heading/PageHeader";
-import { useQuery } from "@tanstack/react-query";
-import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Loading from "../../../components/shared/loading/Loading";
 import Error from "../../../components/shared/others/Error";
 import Filter from "../../../components/shared/menu/Filter";
 import { useEffect, useState } from "react";
+import {
+  usePayments,
+  usePaymentStats,
+} from "../../../hooks/queries/usePaymentQueries";
 
 const PaymentsHistory = () => {
   const [params, setParams] = useState({
@@ -28,24 +30,17 @@ const PaymentsHistory = () => {
     setTableLayout(true);
   }, []);
 
-  const axiosSecure = useAxiosSecure();
+  //getting the payments data
+  const { paymentData, pLoading, pError } = usePayments(params);
 
-  const { data, isLoading, error } = useQuery({
-    queryKey: ["all-payment", params],
-    queryFn: async () => {
-      const res = await axiosSecure.get("/api/payment", {
-        params: { ...params },
-      });
-      return res.data;
-    },
-  });
+  const { metricsData, mLoading, mError } = usePaymentStats();
 
-  if (isLoading) return <Loading />;
-  if (error) return <Error />;
+  if (pLoading || mLoading) return <Loading />;
+  if (pError || mError) return <Error />;
 
-  const payments = data?.data?.payments || [];
-  const totalPages = data?.data?.totalPages || 0;
-  const totalItems = data?.data?.totalItems || 0;
+  const payments = paymentData?.payments || [];
+  const totalPages = paymentData?.totalPages || 0;
+  const totalItems = paymentData?.totalItems || 0;
 
   return (
     <div className="min-h-screen font-sans w-full pb-10 space-y-6">
@@ -72,22 +67,26 @@ const PaymentsHistory = () => {
       </div>
 
       {/* Payment Metrics */}
-      <PaymentMetrics />
+      <PaymentMetrics metricsData={metricsData} />
 
       {/* Main Content Card */}
       <div className="bg-card space-y-6">
         {/* Filter */}
         <Filter params={params} setParams={setParams} layout={layout} />
-        <div>
+
+        <div className="px-4">
           <h2 className="text-sm text-muted-foreground mb-1">
             Showing {String(payments.length).padStart(2, "0")} data of{" "}
             {String(totalItems).padStart(2, "0")} data
           </h2>
+
           {/* Payment Table */}
+
           <PaymentTable payments={payments} layout={layout} />
         </div>
 
         {/* Pagination */}
+
         {payments.length > 0 && (
           <Pagination
             setParams={setParams}

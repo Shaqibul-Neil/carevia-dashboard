@@ -105,7 +105,7 @@ const Filter = ({ params, setParams, layout }) => {
               setCardLayout(false);
             }}
           >
-            <LayoutGrid />
+            <TableOfContents />
           </button>
           <button
             className={`p-2 border cursor-pointer ${
@@ -118,7 +118,7 @@ const Filter = ({ params, setParams, layout }) => {
               setCardLayout(true);
             }}
           >
-            <TableOfContents />
+            <LayoutGrid />
           </button>
         </div>
       </div>

@@ -1,107 +1,126 @@
 import { DollarSign, TrendingUp, CreditCard, Clock } from "lucide-react";
 
-const PaymentMetrics = () => {
-  const metrics = [
-    {
-      id: 1,
-      label: "Total Revenue",
-      value: "$45,280",
-      change: "+12.5%",
-      changeType: "increase",
-      icon: DollarSign,
-      color: "emerald",
-    },
-    {
-      id: 2,
-      label: "Paid Amount",
-      value: "$38,950",
-      change: "+8.2%",
-      changeType: "increase",
-      icon: TrendingUp,
-      color: "blue",
-    },
-    {
-      id: 3,
-      label: "Due Amount",
-      value: "$6,330",
-      change: "-4.3%",
-      changeType: "decrease",
-      icon: Clock,
-      color: "amber",
-    },
-    {
-      id: 4,
-      label: "Transactions",
-      value: "248",
-      change: "+18%",
-      changeType: "increase",
-      icon: CreditCard,
-      color: "violet",
-    },
-  ];
+const iconMap = {
+  "total-price": DollarSign,
+  "amount-Paid": TrendingUp,
+  "due-amount": Clock,
+  transactions: CreditCard,
+};
+const getChangeColor = (metric) => {
+  const isDue = metric._id === "due-amount";
+  if (isDue) {
+    return metric.changeType === "increase"
+      ? "text-rose-500"
+      : "text-emerald-500";
+  }
+  return metric.changeType === "increase"
+    ? "text-emerald-500"
+    : "text-rose-500";
+};
 
-  const colorClasses = {
-    emerald: {
-      bg: "bg-emerald-50 dark:bg-emerald-950/30",
-      border: "border-emerald-100 dark:border-emerald-900",
-      icon: "text-emerald-600 dark:text-emerald-400",
-      iconBg: "bg-emerald-100 dark:bg-emerald-900/50",
+const PaymentMetrics = ({ metricsData }) => {
+  if (!metricsData || metricsData.length === 0) return null;
+
+  //color config
+  const colorConfig = {
+    "total-price": {
+      gradient: "bg-gradient-to-br from-emerald-500 to-teal-600",
+      dot: "bg-emerald-400",
     },
-    blue: {
-      bg: "bg-blue-50 dark:bg-blue-950/30",
-      border: "border-blue-100 dark:border-blue-900",
-      icon: "text-blue-600 dark:text-blue-400",
-      iconBg: "bg-blue-100 dark:bg-blue-900/50",
+    "amount-Paid": {
+      gradient: "bg-gradient-to-br from-blue-500 to-indigo-600",
+      dot: "bg-blue-400",
     },
-    amber: {
-      bg: "bg-amber-50 dark:bg-amber-950/30",
-      border: "border-amber-100 dark:border-amber-900",
-      icon: "text-amber-600 dark:text-amber-400",
-      iconBg: "bg-amber-100 dark:bg-amber-900/50",
+    "due-amount": {
+      gradient: "bg-gradient-to-br from-rose-500 to-red-600",
+      dot: "bg-rose-400",
     },
-    violet: {
-      bg: "bg-violet-50 dark:bg-violet-950/30",
-      border: "border-violet-100 dark:border-violet-900",
-      icon: "text-violet-600 dark:text-violet-400",
-      iconBg: "bg-violet-100 dark:bg-violet-900/50",
+    transactions: {
+      gradient: "bg-gradient-to-br from-purple-500 to-violet-600",
+      dot: "bg-purple-400",
     },
   };
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      {metrics.map((metric) => {
-        const Icon = metric.icon;
-        const colors = colorClasses[metric.color];
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {metricsData.map((metric, index) => {
+        const Icon = iconMap[metric._id] || DollarSign;
+        const config = colorConfig[metric._id] || colorConfig["total-price"];
+        const delay = index * 100;
 
         return (
           <div
-            key={metric.id}
-            className={`${colors.bg} ${colors.border} border rounded-xs p-5 transition-all duration-300 hover:shadow-lg hover:scale-[1.02] group cursor-pointer`}
+            key={metric._id}
+            className="relative group cursor-pointer transform transition-all duration-700 hover:scale-101 hover:-translate-y-3"
+            style={{ transitionDelay: `${delay}ms` }}
           >
-            <div className="flex items-start justify-between mb-4">
-              <div
-                className={`${colors.iconBg} ${colors.icon} w-12 h-12 rounded-xs flex items-center justify-center transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3`}
-              >
-                <Icon size={24} strokeWidth={2.5} />
-              </div>
-              <div
-                className={`text-xs font-bold px-2 py-1 rounded-lg ${
-                  metric.changeType === "increase"
-                    ? "bg-emerald-100 dark:bg-emerald-900/50 text-emerald-700 dark:text-emerald-300"
-                    : "bg-red-100 dark:bg-red-900/50 text-red-700 dark:text-red-300"
-                }`}
-              >
-                {metric.change}
-              </div>
-            </div>
+            {/* Subtle Glow Effect */}
+            <div
+              className={`absolute -inset-1 ${config.gradient} rounded-xs opacity-5 group-hover:opacity-20 transition-all duration-700`}
+            ></div>
 
-            <div>
-              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">
-                {metric.label}
-              </p>
-              <p className="text-3xl font-black text-foreground tracking-tight">
-                {metric.value}
-              </p>
+            {/* Glass Morphism Card */}
+            <div className="relative bg-card/95 backdrop-blur-xl rounded-xs py-2 px-5 shadow-sm border border-border overflow-hidden group-hover:shadow-sm transition-all duration-500">
+              {/* Floating Background Pattern */}
+              <div className="absolute top-0 right-0 w-40 h-40 opacity-[0.04] transform rotate-12 group-hover:rotate-45 transition-transform duration-1000 pointer-events-none">
+                <Icon size={120} className="text-foreground" />
+              </div>
+
+              {/* Premium Floating Orb */}
+              <div
+                className={`absolute top-6 right-6 w-10 h-10 ${config.gradient} rounded-xs flex items-center justify-center shadow-lg transform group-hover:scale-110 group-hover:rotate-12 transition-all duration-500`}
+              >
+                <Icon size={18} className="text-white" />
+              </div>
+
+              {/* Content Area */}
+              <div className="relative z-10">
+                <div className="flex items-center gap-4 mb-4">
+                  {/* Side Indicator Line */}
+                  <div
+                    className={`w-1 h-12 ${config.gradient} rounded-full shadow-lg`}
+                  ></div>
+                  <div>
+                    <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em] block mb-1">
+                      {metric.label}
+                    </span>
+                    <div className="flex items-center gap-2">
+                      <div
+                        className={`w-2 h-2 ${config.dot} rounded-full animate-pulse`}
+                      ></div>
+                      <span className="text-[10px] text-muted-foreground font-medium">
+                        Live Update
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <div className="text-3xl font-black text-foreground tracking-tight leading-none">
+                    {metric._id === "transactions"
+                      ? metric.value
+                      : `$${metric.value}.00`}
+                  </div>
+
+                  {/* Change Type Indicator */}
+                  <div className="flex items-center gap-1.5">
+                    <span
+                      className={`text-[11px] font-bold ${getChangeColor(metric)}`}
+                    >
+                      {metric.changeType === "increase" ? "↑" : "↓"}{" "}
+                      {metric.change}
+                    </span>
+                    <span className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider">
+                      vs last month
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Hover Shine Effect */}
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+                <div className="absolute top-0 -left-full w-full h-full bg-linear-to-r from-transparent via-white/10 to-transparent transform skew-x-12 group-hover:translate-x-full transition-transform duration-1000"></div>
+              </div>
             </div>
           </div>
         );
