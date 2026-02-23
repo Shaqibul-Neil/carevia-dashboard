@@ -24,19 +24,19 @@ const PaymentMetrics = ({ metricsData }) => {
   //color config
   const colorConfig = {
     "total-price": {
-      gradient: "bg-gradient-to-br from-emerald-500 to-teal-600",
+      gradient: "bg-gradient-to-br from-emerald-400 to-teal-400",
       dot: "bg-emerald-400",
     },
     "amount-Paid": {
-      gradient: "bg-gradient-to-br from-blue-500 to-indigo-600",
+      gradient: "bg-gradient-to-br from-blue-400 to-indigo-500",
       dot: "bg-blue-400",
     },
     "due-amount": {
-      gradient: "bg-gradient-to-br from-rose-500 to-red-600",
+      gradient: "bg-gradient-to-br from-rose-400 to-red-500",
       dot: "bg-rose-400",
     },
     transactions: {
-      gradient: "bg-gradient-to-br from-purple-500 to-violet-600",
+      gradient: "bg-gradient-to-br from-purple-400 to-violet-500",
       dot: "bg-purple-400",
     },
   };
@@ -60,7 +60,7 @@ const PaymentMetrics = ({ metricsData }) => {
             ></div>
 
             {/* Glass Morphism Card */}
-            <div className="relative bg-card/95 backdrop-blur-xl rounded-xs py-2 px-5 shadow-sm border border-border overflow-hidden group-hover:shadow-sm transition-all duration-500">
+            <div className="relative bg-card/95 backdrop-blur-xl rounded-xs py-2 px-5 overflow-hidden group-hover:shadow-sm transition-all duration-500">
               {/* Floating Background Pattern */}
               <div className="absolute top-0 right-0 w-40 h-40 opacity-[0.04] transform rotate-12 group-hover:rotate-45 transition-transform duration-1000 pointer-events-none">
                 <Icon size={120} className="text-foreground" />
@@ -77,9 +77,9 @@ const PaymentMetrics = ({ metricsData }) => {
               <div className="relative z-10">
                 <div className="flex items-center gap-4 mb-4">
                   {/* Side Indicator Line */}
-                  <div
+                  {/* <div
                     className={`w-1 h-12 ${config.gradient} rounded-full shadow-lg`}
-                  ></div>
+                  ></div> */}
                   <div>
                     <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em] block mb-1">
                       {metric.label}

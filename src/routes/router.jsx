@@ -8,20 +8,21 @@ import PrivateRoute from "./PrivateRoute";
 import AdminRoute from "./AdminRoute";
 import UserRoute from "./UserRoute";
 
+//Common Pages
+
+import Chat from "../pages/dashboard/Chat";
+import Login from "../pages/auth/Login";
+import AllBookings from "../pages/dashboard/common/AllBookings";
+
 // Admin Pages
-import BookingManagement from "../pages/dashboard/admin/BookingManagement";
-import PaymentsHistory from "../pages/dashboard/admin/PaymentsHistory";
 import UserManagement from "../pages/dashboard/admin/UserManagemant";
 
 // User Pages
-import MyBooking from "../pages/dashboard/user/MyBooking";
-import MyPaymentsHistory from "../pages/dashboard/user/MyPaymentsHistory";
-import NotFound from "../components/shared/others/NotFound";
-import Unauthorized from "../components/shared/others/Unauthorized";
-import Chat from "../pages/dashboard/Chat";
-import Login from "../pages/auth/Login";
 
 // Error Pages
+import NotFound from "../components/shared/others/NotFound";
+import Unauthorized from "../components/shared/others/Unauthorized";
+import PaymentsHistory from "../pages/dashboard/common/PaymentsHistory";
 
 const router = createBrowserRouter([
   {
@@ -47,10 +48,10 @@ const router = createBrowserRouter([
       },
       // Admin Routes
       {
-        path: "admin/booking-management",
+        path: "admin/all-bookings",
         element: (
           <AdminRoute>
-            <BookingManagement />
+            <AllBookings />
           </AdminRoute>
         ),
       },
@@ -75,7 +76,7 @@ const router = createBrowserRouter([
         path: "user/my-booking",
         element: (
           <UserRoute>
-            <MyBooking />
+            <AllBookings />
           </UserRoute>
         ),
       },
@@ -83,7 +84,7 @@ const router = createBrowserRouter([
         path: "user/my-payments-history",
         element: (
           <UserRoute>
-            <MyPaymentsHistory />
+            <PaymentsHistory />
           </UserRoute>
         ),
       },

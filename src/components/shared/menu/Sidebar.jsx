@@ -18,16 +18,6 @@ const Sidebar = () => {
   // Admin Menu
   const adminMenu = [
     {
-      name: "Booking Management",
-      path: "/admin/booking-management",
-      icon: BookOpen,
-    },
-    {
-      name: "Payments History",
-      path: "/admin/payments-history",
-      icon: CreditCard,
-    },
-    {
       name: "User Management",
       path: "/admin/user-management",
       icon: Users,
@@ -35,18 +25,7 @@ const Sidebar = () => {
   ];
 
   // User Menu
-  const userMenu = [
-    {
-      name: "My Booking",
-      path: "/user/my-booking",
-      icon: Calendar,
-    },
-    {
-      name: "My Payments History",
-      path: "/user/my-payments-history",
-      icon: Wallet,
-    },
-  ];
+  const userMenu = [];
 
   // Common Menu for all users
   const commonMenu = [
@@ -54,6 +33,18 @@ const Sidebar = () => {
       name: "Dashboard",
       path: "/",
       icon: Home,
+    },
+    {
+      name: hasRole("admin") ? "All Bookings" : "My Booking",
+      path: hasRole("admin") ? "/admin/all-bookings" : "/user/my-booking",
+      icon: Calendar,
+    },
+    {
+      name: hasRole("admin") ? "Payments History" : "My Payments History",
+      path: hasRole("admin")
+        ? "/admin/payments-history"
+        : "/user/my-payments-history",
+      icon: CreditCard,
     },
     {
       name: "Chat",

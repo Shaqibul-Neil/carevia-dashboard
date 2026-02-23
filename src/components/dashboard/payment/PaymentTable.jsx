@@ -1,7 +1,8 @@
 import { CreditCard, EllipsisVertical, Eye, Trash } from "lucide-react";
 import React from "react";
 
-const PaymentTable = ({ payments, layout }) => {
+const PaymentTable = ({ payments, layout, role }) => {
+  const isAdmin = role === "admin";
   const buttonArray = [
     { name: "Details", icon: Eye, color: "text-emerald-600" },
     { name: "Delete", icon: Trash, color: "text-red-600" },
@@ -54,16 +55,16 @@ const PaymentTable = ({ payments, layout }) => {
             {/* Desktop Header */}
             <thead className="hidden md:table-header-group">
               <tr className="bg-muted/50 dark:bg-muted/20 border-b border-border text-left text-[11px] font-bold text-muted-foreground uppercase tracking-wider">
-                <th className="px-6 py-4 min-w-[200px]">Tracking & Service</th>
-                <th className="px-6 py-4 min-w-[180px]">Customer</th>
-                <th className="px-6 py-4 text-center min-w-[120px]">Date</th>
-                <th className="px-6 py-4 text-right min-w-[120px]">Total</th>
-                <th className="px-6 py-4 text-right min-w-[120px]">Paid</th>
-                <th className="px-6 py-4 text-right min-w-[120px]">Due</th>
-                <th className="px-6 py-4 text-center min-w-[120px]">Method</th>
-                <th className="px-6 py-4 text-center min-w-[120px]">
-                  Settings
-                </th>
+                <th className="px-6 py-4 min-w-50">Tracking & Service</th>
+
+                {isAdmin && <th className="px-6 py-4 min-w-45">Customer</th>}
+
+                <th className="px-6 py-4 text-center min-w-30">Date</th>
+                <th className="px-6 py-4 text-right min-w-30">Total</th>
+                <th className="px-6 py-4 text-right min-w-30">Paid</th>
+                <th className="px-6 py-4 text-right min-w-30">Due</th>
+                <th className="px-6 py-4 text-center min-w-30">Method</th>
+                <th className="px-6 py-4 text-center min-w-30">Settings</th>
               </tr>
             </thead>
 
@@ -86,16 +87,18 @@ const PaymentTable = ({ payments, layout }) => {
                     </td>
 
                     {/* Customer */}
-                    <td className="px-6 py-4">
-                      <div>
-                        <p className="font-semibold text-sm text-foreground">
-                          {payment?.userName}
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          {payment?.userEmail}
-                        </p>
-                      </div>
-                    </td>
+                    {isAdmin && (
+                      <td className="px-6 py-4">
+                        <div>
+                          <p className="font-semibold text-sm text-foreground">
+                            {payment?.userName}
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            {payment?.userEmail}
+                          </p>
+                        </div>
+                      </td>
+                    )}
 
                     {/* Date */}
                     <td className="px-6 py-4 text-center">
@@ -316,14 +319,16 @@ const PaymentTable = ({ payments, layout }) => {
 
                 {/* Customer and Method*/}
                 <div className="flex justify-between items-center">
-                  <div>
-                    <p className="font-semibold text-foreground">
-                      {payment?.userName}
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      {payment?.userEmail}
-                    </p>
-                  </div>
+                  {isAdmin && (
+                    <div>
+                      <p className="font-semibold text-foreground">
+                        {payment?.userName}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {payment?.userEmail}
+                      </p>
+                    </div>
+                  )}
                   <div className="flex justify-center">
                     <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xs text-xs font-semibold bg-muted/50 dark:bg-muted/20 text-foreground border border-border">
                       <CreditCard size={14} />

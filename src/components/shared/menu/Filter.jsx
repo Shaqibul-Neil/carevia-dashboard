@@ -6,7 +6,7 @@ import {
   TableOfContents,
 } from "lucide-react";
 
-const Filter = ({ params, setParams, layout }) => {
+const Filter = ({ params, setParams, layout, isAdmin, sortOptions }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setParams((prev) => ({ ...prev, [name]: value, page: 1 })); // Reset page to 0 whenever filters change
@@ -27,7 +27,7 @@ const Filter = ({ params, setParams, layout }) => {
             value={params.search}
             name="search"
             onChange={(e) => handleChange(e)}
-            placeholder="Search by tracking ID, customer, email, or service..."
+            placeholder={`Search by tracking ID, ${isAdmin && "customer"}, email, or service...`}
             className="w-full pl-10 pr-4 py-2.5 bg-muted/50 dark:bg-muted/20 border border-border rounded-xs text-xs md:text-sm font-medium text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-emerald-400 transition-all"
           />
         </div>
@@ -49,18 +49,11 @@ const Filter = ({ params, setParams, layout }) => {
               value={params.sortby}
               onChange={(e) => handleChange(e)}
             >
-              <option value={"all"}>Sort By</option>
-              <option value="createdAt-desc">Date (Newest First)</option>
-              <option value="createdAt-asc">Date (Oldest First)</option>
-
-              <option value="totalPrice-desc">Total (High to Low)</option>
-              <option value="totalPrice-asc">Total (Low to High)</option>
-
-              <option value="amountPaid-desc">Paid (High to Low)</option>
-              <option value="amountPaid-asc">Paid (Low to High)</option>
-
-              <option value="dueAmount-desc">Due (High to Low)</option>
-              <option value="dueAmount-asc">Due (Low to High)</option>
+              {sortOptions?.map((opt) => (
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
+                </option>
+              ))}
             </select>
 
             <div className="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none">
@@ -93,7 +86,7 @@ const Filter = ({ params, setParams, layout }) => {
           </div>
         </div>
         {/* Layout change button */}
-        <div className="hidden md:flex gap-3">
+        <div className="hidden md:flex gap-1">
           <button
             className={`p-2 border cursor-pointer ${
               tableLayout
@@ -105,7 +98,7 @@ const Filter = ({ params, setParams, layout }) => {
               setCardLayout(false);
             }}
           >
-            <TableOfContents />
+            <TableOfContents size={16} />
           </button>
           <button
             className={`p-2 border cursor-pointer ${
@@ -118,7 +111,7 @@ const Filter = ({ params, setParams, layout }) => {
               setCardLayout(true);
             }}
           >
-            <LayoutGrid />
+            <LayoutGrid size={16} />
           </button>
         </div>
       </div>

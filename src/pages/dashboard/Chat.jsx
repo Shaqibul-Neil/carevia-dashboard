@@ -3,7 +3,6 @@ import ChatUI from "../../components/dashboard/chat/ChatUI";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { showSuccessToast, showErrorToast } from "../../lib/utils";
 import useAuth from "../../hooks/useAuth";
-import carevia from "../../../public/carevia.png";
 import useSocket from "../../hooks/useSocket";
 import { Users } from "lucide-react";
 
@@ -24,7 +23,7 @@ const Chat = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   const axiosSecure = useAxiosSecure();
-
+  const carevia = "/carevia.png";
   // === useEffect #1: Initial fetch ===
   useEffect(() => {
     const fetchUsers = async () => {

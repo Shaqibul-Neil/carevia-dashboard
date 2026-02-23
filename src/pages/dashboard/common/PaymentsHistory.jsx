@@ -1,6 +1,6 @@
 import { Download, Receipt } from "lucide-react";
-import PaymentMetrics from "../../../components/dashboard/payment/admin/PaymentMetrics";
-import PaymentTable from "../../../components/dashboard/payment/admin/PaymentTable";
+import PaymentMetrics from "../../../components/dashboard/payment/PaymentMetrics";
+import PaymentTable from "../../../components/dashboard/payment/PaymentTable";
 import Pagination from "../../../components/shared/menu/Pagination";
 import Button from "../../../components/shared/button/Button";
 import PageHeader from "../../../components/shared/heading/PageHeader";
@@ -8,6 +8,7 @@ import Loading from "../../../components/shared/loading/Loading";
 import Error from "../../../components/shared/others/Error";
 import Filter from "../../../components/shared/menu/Filter";
 import { useEffect, useState } from "react";
+import useAuth from "../../../hooks/useAuth";
 import {
   usePayments,
   usePaymentStats,
@@ -24,11 +25,26 @@ const PaymentsHistory = () => {
   });
   const [tableLayout, setTableLayout] = useState(false);
   const [cardLayout, setCardLayout] = useState(false);
+  const { user } = useAuth();
+  const isAdmin = user?.role === "admin";
   const layout = { tableLayout, setTableLayout, cardLayout, setCardLayout };
 
   useEffect(() => {
     setTableLayout(true);
   }, []);
+
+  //sort options
+  const sortOptions = [
+    { label: "Sort By (Default)", value: "all" },
+    { label: "Date (Newest First)", value: "createdAt-desc" },
+    { label: "Date (Oldest First)", value: "createdAt-asc" },
+    { label: "Total (High to Low)", value: "totalPrice-desc" },
+    { label: "Total (Low to High)", value: "totalPrice-asc" },
+    { label: "Paid (High to Low)", value: "amountPaid-desc" },
+    { label: "Paid (Low to High)", value: "amountPaid-asc" },
+    { label: "Due (High to Low)", value: "dueAmount-desc" },
+    { label: "Due (Low to High)", value: "dueAmount-asc" },
+  ];
 
   //getting the payments data
   const { paymentData, pLoading, pError } = usePayments(params);
@@ -45,26 +61,18 @@ const PaymentsHistory = () => {
   return (
     <div className="min-h-screen font-sans w-full pb-10 space-y-6">
       {/* Page Header */}
-      <div className="bg-card dark:bg-card rounded-xs p-6 md:p-8 shadow-sm border border-border relative overflow-hidden group">
-        {/* Ambient Background Effect */}
-        <div className="absolute -top-24 -right-24 w-64 h-64 bg-primary/5 dark:bg-emerald-400/5 rounded-full blur-3xl pointer-events-none group-hover:bg-primary/10 dark:group-hover:bg-emerald-400/10 transition-colors duration-700"></div>
-
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
-          {/* Title Section */}
-          <PageHeader
-            title={"Payments History"}
-            subText={
-              "Track and manage all payment transactions, revenue, and              outstanding dues."
-            }
-            icon={Receipt}
-          />
-
-          {/* Download PDF Button */}
-          <Button className={"px-4 py-2.5"} icon={<Download size={18} />}>
-            Download PDF
-          </Button>
-        </div>
-      </div>
+      <PageHeader
+        title={isAdmin ? "Payments Management" : "My Payment History"}
+        subText={
+          isAdmin
+            ? "Overview of all system transactions and revenue metrics."
+            : "Review and track your transaction history and outstanding dues."
+        }
+        icon={Receipt}
+        buttonText="Download PDF"
+        buttonIcon={<Download size={18} />}
+        onButtonClick={() => console.log("Downloading...")}
+      />
 
       {/* Payment Metrics */}
       <PaymentMetrics metricsData={metricsData} />
@@ -72,9 +80,15 @@ const PaymentsHistory = () => {
       {/* Main Content Card */}
       <div className="bg-card space-y-6">
         {/* Filter */}
-        <Filter params={params} setParams={setParams} layout={layout} />
+        <Filter
+          params={params}
+          setParams={setParams}
+          layout={layout}
+          isAdmin={isAdmin}
+          sortOptions={sortOptions}
+        />
 
-        <div className="px-4">
+        <div className="px-4 py-3 bg-muted/50 dark:bg-muted/20">
           <h2 className="text-sm text-muted-foreground mb-1">
             Showing {String(payments.length).padStart(2, "0")} data of{" "}
             {String(totalItems).padStart(2, "0")} data
@@ -82,7 +96,7 @@ const PaymentsHistory = () => {
 
           {/* Payment Table */}
 
-          <PaymentTable payments={payments} layout={layout} />
+          <PaymentTable payments={payments} role={user?.role} layout={layout} />
         </div>
 
         {/* Pagination */}

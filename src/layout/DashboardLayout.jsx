@@ -28,22 +28,6 @@ const DashboardLayout = () => {
         {/* Navbar */}
         <Navbar />
 
-        {/* Temporary user info and logout - will be moved later */}
-        {/* <div className="flex justify-between items-center p-4 bg-muted">
-          <div>
-            {/* User info display 
-            <span className="mr-4 text-foreground">Welcome, {user?.name || user?.email}</span>
-
-            {/* Logout button *
-            <button
-              onClick={handleLogout}
-              className="bg-destructive text-destructive-foreground px-4 py-2 rounded"
-            >
-              Logout
-            </button>
-          </div>
-        </div> */}
-
         {/* Page content here */}
         <div className="p-6 min-h-screen">
           <Outlet />
