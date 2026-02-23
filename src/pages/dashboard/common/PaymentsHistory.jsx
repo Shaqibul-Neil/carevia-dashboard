@@ -68,7 +68,6 @@ const PaymentsHistory = () => {
 
   //getting the payments data
   const { paymentData, pLoading, pError } = usePayments(params);
-
   const { metricsData, mLoading, mError } = usePaymentStats();
 
   if (pLoading || mLoading) return <Loading />;

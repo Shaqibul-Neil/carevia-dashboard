@@ -13,7 +13,7 @@ const ActionDropdown = ({ actions }) => {
       </div>
       <ul
         tabIndex={0}
-        className="dropdown-content bg-card border border-border rounded-xs z-50 mt-2 w-40 p-2 shadow-xl"
+        className="dropdown-content bg-card border border-border rounded-xs z-55 mt-2 w-40 p-2 shadow-xl"
       >
         {actions.map((action, index) => (
           <li key={index}>

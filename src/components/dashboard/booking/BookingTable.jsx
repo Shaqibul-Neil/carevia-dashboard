@@ -1,4 +1,12 @@
-import { Eye, Edit, Ban, Trash, MapPin, Calendar } from "lucide-react";
+import {
+  Eye,
+  Edit,
+  Ban,
+  Trash,
+  MapPin,
+  Calendar,
+  Workflow,
+} from "lucide-react";
 import ActionDropdown from "../../shared/button/ActionDropdown";
 import NoData from "../../shared/others/NoData";
 
@@ -16,7 +24,7 @@ const BookingTable = ({ bookings, layout, isAdmin }) => {
 
   const bookingActions = [
     { name: "View", icon: Eye, onClick: () => {} },
-    { name: "Edit", icon: Edit, onClick: () => {} },
+    { name: "Assign", icon: Workflow, onClick: () => {} },
     { name: "Cancel", icon: Ban, onClick: () => {} },
     { name: "Delete", icon: Trash, onClick: () => {}, variant: "danger" },
   ];

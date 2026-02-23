@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useBooking } from "../../../hooks/queries/useBookingQueries";
 import useAuth from "../../../hooks/useAuth";
 import PageHeader from "../../../components/shared/heading/PageHeader";
@@ -9,17 +9,32 @@ import BookingTable from "../../../components/dashboard/booking/BookingTable";
 import Pagination from "../../../components/shared/menu/Pagination";
 import Error from "../../../components/shared/others/Error";
 import Loading from "../../../components/shared/loading/Loading";
+import { useLocation } from "react-router";
 
 const AllBookings = () => {
-  const [tableLayout, setTableLayout] = useState(true);
+  const [params, setParams] = useState({
+    search: "",
+    sortby: "all",
+    status: "all",
+    duration: "all",
+    caregiver: "all",
+    division: "all",
+  });
+  const [tableLayout, setTableLayout] = useState(false);
   const [cardLayout, setCardLayout] = useState(false);
   const { user } = useAuth();
   console.log(user);
   const isAdmin = user?.role === "admin";
   const layout = { tableLayout, setTableLayout, cardLayout, setCardLayout };
+  const { pathname } = useLocation();
+  console.log(pathname);
+
+  useEffect(() => {
+    setTableLayout(true);
+  }, []);
 
   //getting the booking data
-  const { bookingsData, bLoading, bError } = useBooking();
+  const { bookingsData, bLoading, bError } = useBooking(params);
   if (bLoading) return <Loading />;
   if (bError) return <Error />;
 
@@ -28,8 +43,8 @@ const AllBookings = () => {
     { label: "Sort By (Default)", value: "all" },
     { label: "Booking Date (Newest First)", value: "createdAt-desc" },
     { label: "Booking (Oldest First)", value: "createdAt-asc" },
-    { label: "Service Date (Newest First)", value: "totalPrice-desc" },
-    { label: "Service Date (Oldest First)", value: "totalPrice-asc" },
+    { label: "Service Date (Newest First)", value: "date-desc" },
+    { label: "Service Date (Oldest First)", value: "date-asc" },
   ];
 
   //filter configuration
@@ -38,16 +53,36 @@ const AllBookings = () => {
       name: "status",
       label: "Status",
       options: [
+        { label: "Booked", value: "booked" },
         { label: "Confirmed", value: "confirmed" },
         { label: "Cancelled", value: "cancelled" },
       ],
     },
     {
-      name: "duration type",
-      label: "Duration Type",
+      name: "duration",
+      label: "Duration",
       options: [
         { label: "Days", value: "days" },
         { label: "Hours", value: "hours" },
+      ],
+    },
+    {
+      name: "caregiver",
+      label: "Caregiver",
+      options: [
+        { label: "Assigned", value: "assigned" },
+        { label: "Unassigned", value: "unassigned" },
+      ],
+    },
+    {
+      name: "division",
+      label: "Division",
+      options: [
+        { label: "Dhaka", value: "dhaka" },
+        { label: "Chattogram", value: "chattogram" },
+        { label: "Sylhet", value: "sylhet" },
+        { label: "Rajshahi", value: "rajshahi" },
+        { label: "Khulna", value: "khulna" },
       ],
     },
   ];
@@ -71,14 +106,15 @@ const AllBookings = () => {
       <BookingMetrics />
 
       <div className="space-y-6 bg-card">
-        {/* <Filter
+        <Filter
           params={params}
           setParams={setParams}
           layout={layout}
           isAdmin={isAdmin}
           sortOptions={sortOptions}
           filterConfigs={filterConfigs}
-        /> */}
+          pathname={pathname}
+        />
         <div className="px-4 py-3 bg-muted/50 dark:bg-muted/20">
           <h2 className="text-sm text-muted-foreground mb-1">
             Showing {String(bookingsData.length).padStart(2, "0")} data of{" "}

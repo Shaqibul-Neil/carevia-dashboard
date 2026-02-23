@@ -1,12 +1,14 @@
 import { CreditCard, EllipsisVertical, Eye, Trash } from "lucide-react";
 import React from "react";
 import NoData from "../../shared/others/NoData";
+import ActionDropdown from "../../shared/button/ActionDropdown";
 
 const PaymentTable = ({ payments, layout, role }) => {
   const isAdmin = role === "admin";
-  const buttonArray = [
-    { name: "Details", icon: Eye, color: "text-emerald-600" },
-    { name: "Delete", icon: Trash, color: "text-red-600" },
+
+  const paymentActions = [
+    { name: "Details", icon: Eye, onClick: () => {} },
+    { name: "Delete", icon: Trash, onClick: () => {}, variant: "danger" },
   ];
 
   const { tableLayout, cardLayout } = layout;
@@ -124,31 +126,9 @@ const PaymentTable = ({ payments, layout, role }) => {
                         {payment?.paymentMethod}
                       </span>
                     </td>
-                    {/* Settings */}
-                    <td className="px-6 py-4 text-center">
-                      <div className="inline-flex items-center text-xs font-semibold cursor-pointer hover:text-muted-foreground text-emerald-600 dark:text-emerald-400 dropdown dropdown-end z-50">
-                        <div tabIndex={0} role="button">
-                          <div className="w-9">
-                            <EllipsisVertical />
-                          </div>
-                        </div>
-                        <ul
-                          tabIndex={0}
-                          className="dropdown-content bg-muted rounded-xs z-50 mt-3 w-32 p-2 shadow-lg"
-                        >
-                          {/* button Links */}
-                          <div>
-                            {buttonArray.map((link) => (
-                              <li key={link.name}>
-                                <button className="w-full text-left px-1 py-2 hover:bg-foreground text-foreground hover:text-background rounded-xs transition-all flex items-center gap-3 text-sm duration-500 cursor-pointer">
-                                  <link.icon className={`size-4`} />
-                                  <span>{link.name}</span>
-                                </button>
-                              </li>
-                            ))}
-                          </div>
-                        </ul>
-                      </div>
+                    {/* Actions Dropdown */}
+                    <td className="px-6 py-4 text-right">
+                      <ActionDropdown actions={paymentActions} />
                     </td>
                   </tr>
 
@@ -167,29 +147,9 @@ const PaymentTable = ({ payments, layout, role }) => {
                           <span className="text-xs font-semibold text-muted-foreground">
                             {formatDate(payment?.createdAt)}
                           </span>
-                          {/* Settings */}
-                          <div className="inline-flex items-center text-xs font-semibold -mr-2 cursor-pointer hover:text-muted-foreground text-emerald-600 dark:text-emerald-400 dropdown dropdown-end z-50">
-                            <div tabIndex={0} role="button">
-                              <div>
-                                <EllipsisVertical />
-                              </div>
-                            </div>
-                            <ul
-                              tabIndex={0}
-                              className="dropdown-content bg-muted rounded-xs z-50 mt-3 w-32 p-2 shadow-lg"
-                            >
-                              {/* button Links */}
-                              <div>
-                                {buttonArray.map((link) => (
-                                  <li key={link.name}>
-                                    <button className="w-full text-left px-1 py-2 hover:bg-foreground text-foreground hover:text-background rounded-xs transition-all flex items-center gap-3 text-sm duration-500 cursor-pointer">
-                                      <link.icon className={`size-4`} />
-                                      <span>{link.name}</span>
-                                    </button>
-                                  </li>
-                                ))}
-                              </div>
-                            </ul>
+                          {/* Actions Dropdown */}
+                          <div className="px-6 py-4 text-right">
+                            <ActionDropdown actions={paymentActions} />
                           </div>
                         </div>
 
@@ -272,29 +232,9 @@ const PaymentTable = ({ payments, layout, role }) => {
                   <span className="text-xs font-semibold text-muted-foreground">
                     {formatDate(payment?.createdAt)}
                   </span>
-                  {/* Settings */}
-                  <div className="inline-flex items-center text-xs font-semibold -mr-2 cursor-pointer hover:text-muted-foreground text-emerald-600 dark:text-emerald-400 dropdown dropdown-end z-50">
-                    <div tabIndex={0} role="button">
-                      <div>
-                        <EllipsisVertical />
-                      </div>
-                    </div>
-                    <ul
-                      tabIndex={0}
-                      className="dropdown-content bg-muted rounded-xs z-50 mt-3 w-32 p-2 shadow-lg"
-                    >
-                      {/* button Links */}
-                      <div>
-                        {buttonArray.map((link) => (
-                          <li key={link.name}>
-                            <button className="w-full text-left px-1 py-2 hover:bg-foreground text-foreground hover:text-background rounded-xs transition-all flex items-center gap-3 text-sm duration-500 cursor-pointer">
-                              <link.icon className={`size-4`} />
-                              <span>{link.name}</span>
-                            </button>
-                          </li>
-                        ))}
-                      </div>
-                    </ul>
+                  {/* Actions Dropdown */}
+                  <div className="px-6 py-4 text-right">
+                    <ActionDropdown actions={paymentActions} />
                   </div>
                 </div>
 
