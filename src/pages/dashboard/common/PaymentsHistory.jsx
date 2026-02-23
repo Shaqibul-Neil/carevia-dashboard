@@ -46,6 +46,26 @@ const PaymentsHistory = () => {
     { label: "Due (Low to High)", value: "dueAmount-asc" },
   ];
 
+  //filter configuration
+  const filterConfigs = [
+    {
+      name: "status",
+      label: "Status",
+      options: [
+        { label: "Paid", value: "paid" },
+        { label: "Due", value: "due" },
+      ],
+    },
+    {
+      name: "method",
+      label: "Method",
+      options: [
+        { label: "Card", value: "card" },
+        { label: "Cash", value: "cash" },
+      ],
+    },
+  ];
+
   //getting the payments data
   const { paymentData, pLoading, pError } = usePayments(params);
 
@@ -86,6 +106,7 @@ const PaymentsHistory = () => {
           layout={layout}
           isAdmin={isAdmin}
           sortOptions={sortOptions}
+          filterConfigs={filterConfigs}
         />
 
         <div className="px-4 py-3 bg-muted/50 dark:bg-muted/20">

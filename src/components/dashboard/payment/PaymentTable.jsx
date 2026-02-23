@@ -1,5 +1,6 @@
 import { CreditCard, EllipsisVertical, Eye, Trash } from "lucide-react";
 import React from "react";
+import NoData from "../../shared/others/NoData";
 
 const PaymentTable = ({ payments, layout, role }) => {
   const isAdmin = role === "admin";
@@ -25,23 +26,11 @@ const PaymentTable = ({ payments, layout, role }) => {
 
   if (payments.length === 0) {
     return (
-      <div className="rounded-xs border border-border overflow-hidden bg-card w-full">
-        <div className="px-6 py-32 text-center">
-          <div className="flex flex-col items-center justify-center gap-4">
-            <div className="w-20 h-20 bg-muted/50 dark:bg-muted/20 rounded-xs flex items-center justify-center text-muted-foreground">
-              <CreditCard size={32} />
-            </div>
-            <div>
-              <h3 className="text-foreground font-bold text-lg">
-                No Payments Found
-              </h3>
-              <p className="text-muted-foreground text-sm mt-1">
-                No payment records available
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+      <NoData
+        text={"No Payments Found"}
+        subtext={"No payment records available"}
+        icon={CreditCard}
+      />
     );
   }
 

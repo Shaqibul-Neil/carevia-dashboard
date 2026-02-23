@@ -11,7 +11,7 @@ export const useBooking = () => {
     queryKey: ["bookings"],
     queryFn: async () => {
       const res = await axiosSecure.get("/api/booking");
-      console.log(res);
+      console.log("res", res);
       return res?.data?.data;
     },
   });
