@@ -26,8 +26,6 @@ const AllBookings = () => {
   console.log(user);
   const isAdmin = user?.role === "admin";
   const layout = { tableLayout, setTableLayout, cardLayout, setCardLayout };
-  const { pathname } = useLocation();
-  console.log(pathname);
 
   useEffect(() => {
     setTableLayout(true);
@@ -78,11 +76,14 @@ const AllBookings = () => {
       name: "division",
       label: "Division",
       options: [
-        { label: "Dhaka", value: "dhaka" },
-        { label: "Chattogram", value: "chattogram" },
-        { label: "Sylhet", value: "sylhet" },
-        { label: "Rajshahi", value: "rajshahi" },
-        { label: "Khulna", value: "khulna" },
+        { label: "Dhaka", value: "Dhaka" },
+        { label: "Chattogram", value: "Chattogram" },
+        { label: "Sylhet", value: "Sylhet" },
+        { label: "Rajshahi", value: "Rajshahi" },
+        { label: "Khulna", value: "Khulna" },
+        { label: "Rangpur", value: "Rangpur" },
+        { label: "Barisal", value: "Barisal" },
+        { label: "Mymensingh", value: "Mymensingh" },
       ],
     },
   ];
@@ -113,7 +114,6 @@ const AllBookings = () => {
           isAdmin={isAdmin}
           sortOptions={sortOptions}
           filterConfigs={filterConfigs}
-          pathname={pathname}
         />
         <div className="px-4 py-3 bg-muted/50 dark:bg-muted/20">
           <h2 className="text-sm text-muted-foreground mb-1">

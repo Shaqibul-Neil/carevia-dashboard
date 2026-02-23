@@ -6,6 +6,8 @@ import {
   MapPin,
   Calendar,
   Workflow,
+  UserMinus,
+  UserCheck,
 } from "lucide-react";
 import ActionDropdown from "../../shared/button/ActionDropdown";
 import NoData from "../../shared/others/NoData";
@@ -23,10 +25,17 @@ const BookingTable = ({ bookings, layout, isAdmin }) => {
   };
 
   const bookingActions = [
-    { name: "View", icon: Eye, onClick: () => {} },
-    { name: "Assign", icon: Workflow, onClick: () => {} },
-    { name: "Cancel", icon: Ban, onClick: () => {} },
-    { name: "Delete", icon: Trash, onClick: () => {}, variant: "danger" },
+    { name: "View Details", icon: Eye, onClick: () => {} },
+    ...(isAdmin
+      ? [{ name: "Assign Caregiver", icon: Workflow, onClick: () => {} }]
+      : []),
+    { name: "Cancel Booking", icon: Ban, onClick: () => {} },
+    {
+      name: "Delete Booking",
+      icon: Trash,
+      onClick: () => {},
+      variant: "danger",
+    },
   ];
 
   if (!bookings || bookings.length === 0)
@@ -50,6 +59,7 @@ const BookingTable = ({ bookings, layout, isAdmin }) => {
                   <th className="px-6 py-4 min-w-50">Customer Email</th>
                 )}
                 <th className="px-6 py-4 min-w-50">Schedule</th>
+                <th className="px-6 py-4">Caregiver</th>
                 <th className="px-6 py-4">Booking Location</th>
                 <th className="px-6 py-4 text-center">Status</th>
                 <th className="px-6 py-4 text-right">Actions</th>
@@ -102,7 +112,30 @@ const BookingTable = ({ bookings, layout, isAdmin }) => {
                       </div>
                     </div>
                   </td>
+                  {/* Caregiver */}
+                  <td className="px-6 py-4">
+                    {booking.caregiver?.assigned ? (
+                      <div className="flex flex-col gap-0.5">
+                        <div className="flex items-center gap-2 text-primary">
+                          <UserCheck size={14} />
+                          <span className="font-bold text-sm text-foreground">
+                            {booking.caregiver.name}
+                          </span>
+                        </div>
+                        <span className="text-xs font-semibold text-muted-foreground pl-5">
+                          {booking.caregiver.id?.slice(-8)}
+                        </span>
 
+                        <span className="text-[11px] font-semibold text-muted-foreground pl-5 uppercase tracking-wide">
+                          Ready to Serve
+                        </span>
+                      </div>
+                    ) : (
+                      <div className="rounded-xs text-[10px] px-2.5 py-1 font-bold border uppercase bg-rose-500/10 text-rose-500 border-rose-500/20 flex items-center justify-baseline w-25">
+                        Not Assigned
+                      </div>
+                    )}
+                  </td>
                   {/* Location (Full Address + District/Division) */}
                   <td className="px-6 py-4">
                     <div className="max-w-50">

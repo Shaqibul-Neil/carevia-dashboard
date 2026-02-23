@@ -16,6 +16,7 @@ export const useBooking = (params) => {
       console.log("res", res);
       return res?.data?.data;
     },
+    placeholderData: (previousData) => previousData,
   });
   return { bookingsData, bLoading, bError };
 };

@@ -15,6 +15,7 @@ export const usePayments = (params) => {
       });
       return res?.data?.data;
     },
+    placeholderData: (previousData) => previousData,
   });
   return { paymentData, pLoading, pError };
 };
