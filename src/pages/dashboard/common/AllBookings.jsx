@@ -9,7 +9,6 @@ import BookingTable from "../../../components/dashboard/booking/BookingTable";
 import Pagination from "../../../components/shared/menu/Pagination";
 import Error from "../../../components/shared/others/Error";
 import Loading from "../../../components/shared/loading/Loading";
-import { useLocation } from "react-router";
 
 const AllBookings = () => {
   const [params, setParams] = useState({
@@ -19,17 +18,15 @@ const AllBookings = () => {
     duration: "all",
     caregiver: "all",
     division: "all",
+    page: 1,
+    limit: 2,
   });
-  const [tableLayout, setTableLayout] = useState(false);
+  const [tableLayout, setTableLayout] = useState(true);
   const [cardLayout, setCardLayout] = useState(false);
   const { user } = useAuth();
   console.log(user);
   const isAdmin = user?.role === "admin";
   const layout = { tableLayout, setTableLayout, cardLayout, setCardLayout };
-
-  useEffect(() => {
-    setTableLayout(true);
-  }, []);
 
   //getting the booking data
   const { bookingsData, bLoading, bError } = useBooking(params);
@@ -88,6 +85,11 @@ const AllBookings = () => {
     },
   ];
 
+  const bookings = bookingsData?.bookings || [];
+  const totalPages = bookingsData?.totalPages || 0;
+  console.log(totalPages);
+  const totalItems = bookingsData?.totalItems || 0;
+
   return (
     <div className="min-h-screen font-sans w-full pb-10 space-y-6">
       {/* Page Header */}
@@ -117,22 +119,18 @@ const AllBookings = () => {
         />
         <div className="px-4 py-3 bg-muted/50 dark:bg-muted/20">
           <h2 className="text-sm text-muted-foreground mb-1">
-            Showing {String(bookingsData.length).padStart(2, "0")} data of{" "}
-            {/* {String(totalItems).padStart(2, "0")} data */}
+            Showing {String(bookings.length).padStart(2, "0")} data of{" "}
+            {String(totalItems).padStart(2, "0")} data
           </h2>
 
           {/* Bookings Table */}
-          <BookingTable
-            bookings={bookingsData}
-            layout={layout}
-            isAdmin={isAdmin}
-          />
+          <BookingTable bookings={bookings} layout={layout} isAdmin={isAdmin} />
         </div>
 
         <Pagination
-        // currentPage={params.page}
-        // totalPages={5}
-        // setParams={setParams}
+          currentPage={params.page}
+          totalPages={totalPages}
+          setParams={setParams}
         />
       </div>
     </div>

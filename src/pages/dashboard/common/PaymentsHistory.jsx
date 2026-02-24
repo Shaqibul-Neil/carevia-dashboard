@@ -2,12 +2,11 @@ import { Download, Receipt } from "lucide-react";
 import PaymentMetrics from "../../../components/dashboard/payment/PaymentMetrics";
 import PaymentTable from "../../../components/dashboard/payment/PaymentTable";
 import Pagination from "../../../components/shared/menu/Pagination";
-import Button from "../../../components/shared/button/Button";
 import PageHeader from "../../../components/shared/heading/PageHeader";
 import Loading from "../../../components/shared/loading/Loading";
 import Error from "../../../components/shared/others/Error";
 import Filter from "../../../components/shared/menu/Filter";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import useAuth from "../../../hooks/useAuth";
 import {
   usePayments,
@@ -23,15 +22,11 @@ const PaymentsHistory = () => {
     page: 1,
     limit: 2,
   });
-  const [tableLayout, setTableLayout] = useState(false);
+  const [tableLayout, setTableLayout] = useState(true);
   const [cardLayout, setCardLayout] = useState(false);
   const { user } = useAuth();
   const isAdmin = user?.role === "admin";
   const layout = { tableLayout, setTableLayout, cardLayout, setCardLayout };
-
-  useEffect(() => {
-    setTableLayout(true);
-  }, []);
 
   //sort options
   const sortOptions = [
