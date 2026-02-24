@@ -20,7 +20,7 @@ const PaymentsHistory = () => {
     status: "all",
     method: "all",
     page: 1,
-    limit: 2,
+    limit: 5,
   });
   const [tableLayout, setTableLayout] = useState(true);
   const [cardLayout, setCardLayout] = useState(false);

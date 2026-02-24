@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useBooking } from "../../../hooks/queries/useBookingQueries";
+import {
+  useBooking,
+  useBookingStats,
+} from "../../../hooks/queries/useBookingQueries";
 import useAuth from "../../../hooks/useAuth";
 import PageHeader from "../../../components/shared/heading/PageHeader";
 import { NotebookTabs, Plus } from "lucide-react";
@@ -19,7 +22,7 @@ const AllBookings = () => {
     caregiver: "all",
     division: "all",
     page: 1,
-    limit: 2,
+    limit: 5,
   });
   const [tableLayout, setTableLayout] = useState(true);
   const [cardLayout, setCardLayout] = useState(false);
@@ -27,11 +30,6 @@ const AllBookings = () => {
   console.log(user);
   const isAdmin = user?.role === "admin";
   const layout = { tableLayout, setTableLayout, cardLayout, setCardLayout };
-
-  //getting the booking data
-  const { bookingsData, bLoading, bError } = useBooking(params);
-  if (bLoading) return <Loading />;
-  if (bError) return <Error />;
 
   //sort options
   const sortOptions = [
@@ -85,6 +83,13 @@ const AllBookings = () => {
     },
   ];
 
+  //getting the booking data
+  const { bookingsData, bLoading, bError } = useBooking(params);
+  const { metricsData, mLoading, mError } = useBookingStats();
+
+  if (bLoading || mLoading) return <Loading />;
+  if (bError || mError) return <Error />;
+
   const bookings = bookingsData?.bookings || [];
   const totalPages = bookingsData?.totalPages || 0;
   console.log(totalPages);
@@ -106,7 +111,7 @@ const AllBookings = () => {
         onButtonClick={() => console.log("Adding...")}
       />
 
-      <BookingMetrics />
+      <BookingMetrics metricsData={metricsData} />
 
       <div className="space-y-6 bg-card">
         <Filter
