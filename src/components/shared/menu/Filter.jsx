@@ -69,7 +69,7 @@ const Filter = ({
       <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
         <div className="grid grid-cols-2 md:flex md:flex-wrap gap-3 w-full grow">
           {filterConfigs?.map((config) => (
-            <div className="relative min-w-30 md:w-32 grow">
+            <div key={config.name} className="relative min-w-30 md:w-32 grow">
               <select
                 className="px-4 py-2.5 bg-muted/50 dark:bg-muted/20 border border-border rounded-xs text-xs md:text-sm font-semibold text-foreground focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-emerald-400 transition-all cursor-pointer w-full"
                 key={config.name}

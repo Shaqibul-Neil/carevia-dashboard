@@ -1,5 +1,7 @@
 import { CalendarCheck, Users, Ban, TrendingUp } from "lucide-react";
 import MetricsCard from "../../shared/card/MetricsCard";
+import BookingTrendChart from "./BookingTrendChart";
+import BookingUserStat from "./BookingUserStat";
 
 const iconMap = {
   "total-bookings": Users,
@@ -7,8 +9,14 @@ const iconMap = {
   cancelled: Ban,
 };
 
-const BookingMetrics = ({ metricsData }) => {
-  if (!metricsData || metricsData.length === 0) return null;
+const BookingMetrics = ({ metricsData, trendsData, isAdmin, isUser }) => {
+  if (
+    !metricsData ||
+    metricsData.length === 0 ||
+    !trendsData ||
+    trendsData.length === 0
+  )
+    return null;
 
   //color config
   const colorConfig = {
@@ -38,27 +46,8 @@ const BookingMetrics = ({ metricsData }) => {
       ))}
 
       {/* The Chart Widget */}
-      <div className="bg-card border border-border p-5 rounded-xs flex flex-col justify-between">
-        <div className="flex justify-between items-center mb-2">
-          <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-            Booking Trends
-          </p>
-          <TrendingUp size={14} className="text-emerald-500" />
-        </div>
-        {/* Simple CSS-based Sparkline Mockup */}
-        <div className="flex items-end gap-1 h-12">
-          {[40, 70, 45, 90, 65, 80, 50].map((h, i) => (
-            <div
-              key={i}
-              style={{ height: `${h}%` }}
-              className="flex-1 bg-primary/20 hover:bg-primary transition-colors rounded-t-xs"
-            />
-          ))}
-        </div>
-        <p className="text-[10px] text-muted-foreground mt-2">
-          Peak bookings on Monday
-        </p>
-      </div>
+      {isAdmin && <BookingTrendChart trendsData={trendsData} />}
+      {isUser && <BookingUserStat trendsData={trendsData} />}
     </div>
   );
 };

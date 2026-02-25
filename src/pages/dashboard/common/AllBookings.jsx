@@ -27,8 +27,8 @@ const AllBookings = () => {
   const [tableLayout, setTableLayout] = useState(true);
   const [cardLayout, setCardLayout] = useState(false);
   const { user } = useAuth();
-  console.log(user);
   const isAdmin = user?.role === "admin";
+  const isUser = user?.role === "user";
   const layout = { tableLayout, setTableLayout, cardLayout, setCardLayout };
 
   //sort options
@@ -85,16 +85,21 @@ const AllBookings = () => {
 
   //getting the booking data
   const { bookingsData, bLoading, bError } = useBooking(params);
-  const { metricsData, mLoading, mError } = useBookingStats();
+  const { data, mLoading, mError } = useBookingStats();
 
   if (bLoading || mLoading) return <Loading />;
   if (bError || mError) return <Error />;
-
+  console.log("met", data);
   const bookings = bookingsData?.bookings || [];
   const totalPages = bookingsData?.totalPages || 0;
-  console.log(totalPages);
   const totalItems = bookingsData?.totalItems || 0;
-
+  const metricsData = data?.metrics || [];
+  let trendsData;
+  if (isAdmin) {
+    trendsData = data?.trends || [];
+  } else if (isUser) {
+    trendsData = data?.upcoming || [];
+  }
   return (
     <div className="min-h-screen font-sans w-full pb-10 space-y-6">
       {/* Page Header */}
@@ -111,7 +116,12 @@ const AllBookings = () => {
         onButtonClick={() => console.log("Adding...")}
       />
 
-      <BookingMetrics metricsData={metricsData} />
+      <BookingMetrics
+        metricsData={metricsData}
+        trendsData={trendsData}
+        isUser={isUser}
+        isAdmin={isAdmin}
+      />
 
       <div className="space-y-6 bg-card">
         <Filter

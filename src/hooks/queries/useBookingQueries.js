@@ -13,7 +13,6 @@ export const useBooking = (params) => {
       const res = await axiosSecure.get("/api/booking", {
         params: { ...params },
       });
-      console.log("res", res);
       return res?.data?.data;
     },
     placeholderData: (previousData) => previousData,
@@ -24,7 +23,7 @@ export const useBooking = (params) => {
 export const useBookingStats = () => {
   const axiosSecure = useAxiosSecure();
   const {
-    data: metricsData = [],
+    data = [],
     isLoading: mLoading,
     isError: mError,
   } = useQuery({
@@ -34,5 +33,5 @@ export const useBookingStats = () => {
       return res?.data?.data;
     },
   });
-  return { metricsData, mLoading, mError };
+  return { data, mLoading, mError };
 };

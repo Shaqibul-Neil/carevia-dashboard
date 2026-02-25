@@ -14,7 +14,6 @@ import NoData from "../../shared/others/NoData";
 
 const BookingTable = ({ bookings, layout, isAdmin }) => {
   const { tableLayout } = layout;
-  console.log(bookings, isAdmin);
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString("en-GB", {
