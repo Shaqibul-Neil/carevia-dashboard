@@ -8,9 +8,14 @@ const BookingUserStat = ({ trendsData }) => {
   if (!trendsData || trendsData.length === 0) return null;
 
   return (
-    <div className="relative group h-full bg-foreground">
+    <div className="relative group h-full bg-foreground rounded-xs">
+      {/* Subtle Glow Effect */}
+      <div
+        className={`absolute -inset-1 bg-linear-to-br from-emerald-800 to-teal-800 rounded-xs opacity-20 dark:opacity-5 group-hover:opacity-20 transition-all duration-700`}
+      ></div>
+
       {/* Main Glass Morphism Card with Subtle Border */}
-      <div className="relative border-2 border-green-600 group-hover:border-green-800 rounded-xs py-2 px-5 overflow-hidden h-full flex flex-col gap-3 transition-colors duration-500">
+      <div className="relative overflow-hidden h-full flex flex-col gap-3 transition-colors duration-500 py-2 px-5">
         {/* Header */}
         <div className="flex items-center">
           <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">
