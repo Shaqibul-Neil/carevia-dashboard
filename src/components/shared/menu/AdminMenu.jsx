@@ -13,6 +13,16 @@ import SidebarLinks from "./SidebarLinks";
 
 const AdminMenu = () => {
   const [isUsersOpen, setIsUsersOpen] = useState(false);
+  //sidebar toggle
+  const handleAllUsersClick = () => {
+    const drawer = document.getElementById("my-drawer-4");
+    //check if drawer is open or not
+    if (drawer && !drawer.checked) {
+      drawer.checked = true;
+    }
+    //dropdown menu
+    setIsUsersOpen(!isUsersOpen);
+  };
 
   return (
     <>
@@ -24,7 +34,7 @@ const AdminMenu = () => {
       {/* All Users with Submenu */}
       <li className="flex flex-col">
         <button
-          onClick={() => setIsUsersOpen(!isUsersOpen)}
+          onClick={handleAllUsersClick}
           className={`flex items-center justify-between gap-3 w-full py-2.5 px-3 rounded-xs transition-all duration-500 font-medium text-foreground hover:bg-emerald-100/50 dark:hover:bg-emerald-900/30 group`}
         >
           <div className="flex items-center gap-3">

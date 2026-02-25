@@ -101,6 +101,7 @@ const PaymentsHistory = () => {
           isAdmin={isAdmin}
           sortOptions={sortOptions}
           filterConfigs={filterConfigs}
+          searchPlaceholder={`Search by tracking ID, ${isAdmin && "customer"}, email, or service...`}
         />
 
         <div className="px-4 py-3 bg-muted/50 dark:bg-muted/20">

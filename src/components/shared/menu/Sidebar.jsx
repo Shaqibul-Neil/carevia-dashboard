@@ -1,15 +1,5 @@
-import {
-  Home,
-  Calendar,
-  CreditCard,
-  Users,
-  BookOpen,
-  Wallet,
-  MessageSquare,
-} from "lucide-react";
 import { GiHeartInside } from "react-icons/gi";
 import useAuth from "../../../hooks/useAuth";
-import SidebarLinks from "./SidebarLinks";
 import { Link } from "react-router";
 import AdminMenu from "./AdminMenu";
 import UserMenu from "./UserMenu";

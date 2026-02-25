@@ -89,7 +89,6 @@ const AllBookings = () => {
 
   if (bLoading || mLoading) return <Loading />;
   if (bError || mError) return <Error />;
-  console.log("met", data);
   const bookings = bookingsData?.bookings || [];
   const totalPages = bookingsData?.totalPages || 0;
   const totalItems = bookingsData?.totalItems || 0;
@@ -131,6 +130,7 @@ const AllBookings = () => {
           isAdmin={isAdmin}
           sortOptions={sortOptions}
           filterConfigs={filterConfigs}
+          searchPlaceholder={`Search by tracking ID, ${isAdmin && "customer"}, email, or service...`}
         />
         <div className="px-4 py-3 bg-muted/50 dark:bg-muted/20">
           <h2 className="text-sm text-muted-foreground mb-1">

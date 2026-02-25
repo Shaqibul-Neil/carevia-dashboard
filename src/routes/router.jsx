@@ -23,6 +23,7 @@ import UserManagement from "../pages/dashboard/admin/UserManagemant";
 import NotFound from "../components/shared/others/NotFound";
 import Unauthorized from "../components/shared/others/Unauthorized";
 import PaymentsHistory from "../pages/dashboard/common/PaymentsHistory";
+import CaregiverManagement from "../pages/dashboard/admin/CaregiverManagement";
 
 const router = createBrowserRouter([
   {
@@ -68,6 +69,14 @@ const router = createBrowserRouter([
         element: (
           <AdminRoute>
             <UserManagement />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "admin/caregiver-management",
+        element: (
+          <AdminRoute>
+            <CaregiverManagement />
           </AdminRoute>
         ),
       },
