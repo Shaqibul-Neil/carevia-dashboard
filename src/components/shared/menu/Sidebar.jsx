@@ -11,47 +11,11 @@ import { GiHeartInside } from "react-icons/gi";
 import useAuth from "../../../hooks/useAuth";
 import SidebarLinks from "./SidebarLinks";
 import { Link } from "react-router";
+import AdminMenu from "./AdminMenu";
+import UserMenu from "./UserMenu";
 
 const Sidebar = () => {
   const { hasRole } = useAuth();
-
-  // Admin Menu
-  const adminMenu = [
-    {
-      name: "User Management",
-      path: "/admin/user-management",
-      icon: Users,
-    },
-  ];
-
-  // User Menu
-  const userMenu = [];
-
-  // Common Menu for all users
-  const commonMenu = [
-    {
-      name: "Dashboard",
-      path: "/",
-      icon: Home,
-    },
-    {
-      name: hasRole("admin") ? "All Bookings" : "My Booking",
-      path: hasRole("admin") ? "/admin/all-bookings" : "/user/my-booking",
-      icon: Calendar,
-    },
-    {
-      name: hasRole("admin") ? "Payments History" : "My Payments History",
-      path: hasRole("admin")
-        ? "/admin/payments-history"
-        : "/user/my-payments-history",
-      icon: CreditCard,
-    },
-    {
-      name: "Chat",
-      path: "/chat",
-      icon: MessageSquare,
-    },
-  ];
 
   return (
     <div className="drawer-side is-drawer-close:overflow-visible">
@@ -100,42 +64,9 @@ const Sidebar = () => {
 
         {/* Sidebar Menu Items */}
         <ul className="menu w-full grow px-1.5 py-2 space-y-0.5 z-25">
-          {/* Common Menu */}
-          {commonMenu.map((item) => (
-            <li key={item.path}>
-              <SidebarLinks to={item.path} icon={item.icon} label={item.name} />
-            </li>
-          ))}
-
-          {/* Admin Menu - Only visible for admin role */}
-          {hasRole("admin") && (
-            <>
-              {adminMenu.map((item) => (
-                <li key={item.path}>
-                  <SidebarLinks
-                    to={item.path}
-                    icon={item.icon}
-                    label={item.name}
-                  />
-                </li>
-              ))}
-            </>
-          )}
-
-          {/* User Menu - Only visible for user role */}
-          {hasRole("user") && (
-            <>
-              {userMenu.map((item) => (
-                <li key={item.path}>
-                  <SidebarLinks
-                    to={item.path}
-                    icon={item.icon}
-                    label={item.name}
-                  />
-                </li>
-              ))}
-            </>
-          )}
+          {/* Role based menu components */}
+          {hasRole("admin") && <AdminMenu />}
+          {hasRole("user") && <UserMenu />}
         </ul>
       </div>
     </div>
